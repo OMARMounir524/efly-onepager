@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>eFLY – One-Pager</title>
+    <meta name="description" content="Draft-Onepager für Referenzen (Logos, Bilder, Videos), Team, Prozess und Kontakt. Eine Marke der eFLY." />
+
+    <style>
+      /* Pfeil-Icon am Impressum-Button animieren (dreht sich beim Öffnen um 180°) */
+      #toggle-impressum .chev { transition: transform 200ms ease; }
+      #toggle-impressum[aria-expanded="true"] .chev { transform: rotate(180deg); }
+    </style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- TailwindCSS Play CDN für schnelles Prototyping -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {50:'#f0f6ff',100:'#dceaff',200:'#b9d5ff',300:'#8bb8ff',400:'#5e99ff',500:'#3b7dff',600:'#2b60d1',700:'#224aa4',800:'#1d3a7e',900:'#192f65'},
+              efly: '#f07b16'
+            },
+            boxShadow: { soft: '0 8px 30px rgba(0,0,0,0.08)' },
+            fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'] }
+          }
+        }
+      }
+    </script>
+    
+
+    <!-- Icons (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+      /* Sanftes Scrollen bei Anker-Links und kleines „DRAFT“-Badge fixieren */
+      html { scroll-behavior: smooth; }
+      .draft-badge { position: fixed; top: 12px; left: 12px; z-index: 50; }
+    </style>
+  </head>
+
+  <body class="antialiased text-slate-800">
+    <!-- Hinweis-Badge oben links -->
+    <div class="draft-badge px-2 py-1 text-xs font-medium rounded bg-yellow-200 text-yellow-900 shadow">DRAFT</div>
+
+    <!-- Kopfbereich mit Navigation -->
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <!-- Logo/Anker zurück zum Hero -->
+          <!-- Logo + Titel (Link zum Hero) -->
+<a href="#hero" class="flex items-center gap-3 font-semibold">
+  <img
+    src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png"
+    alt="eFLY Logo"
+    class="h-6 w-auto sm:h-7 object-contain shrink-0"
+    loading="lazy"
+    decoding="async"
+  />
+  <span class="whitespace-nowrap">
+    eFLY Onepager
+  </span>
+</a>
+         
+
+          <!-- Hauptnavigation (Desktop) -->
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <a href="#logos" class="hover:text-brand-600">Referenzen Logos</a>
+            <a href="#videos" class="hover:text-brand-600">Videos</a>
+            <a href="#bilder" class="hover:text-brand-600">Bilder</a>
+            <a href="#prozess" class="hover:text-brand-600">Ablauf</a>
+            <a href="#team" class="hover:text-brand-600">Team</a>
+            <a href="#kontakt" class="hover:text-brand-600">Kontakt</a>
+          </nav>
+
+          <!-- Menü-Button (Mobil) -->
+          <button id="menu-btn" class="md:hidden inline-flex items-center justify-center rounded-xl border border-slate-300 px-3 py-2 text-sm">Menü</button>
+        </div>
+
+        <!-- Ausklapp-Menü (Mobil) -->
+        <div id="mobile-menu" class="md:hidden hidden pb-4">
+          <nav class="flex flex-col gap-3 text-sm">
+            <a href="#logos" class="hover:text-brand-600">Referenzen Logos</a>
+            <a href="#videos" class="hover:text-brand-600">Videos</a>
+            <a href="#bilder" class="hover:text-brand-600">Bilder</a>
+            <a href="#prozess" class="hover:text-brand-600">Ablauf</a>
+            <a href="#team" class="hover:text-brand-600">Team</a>
+            <a href="#kontakt" class="hover:text-brand-600">Kontakt</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero-Bereich mit Text links und Autoplay-Video rechts -->
+    <section id="hero" class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-white"></div>
+
+      <div class="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-10 items-center">
+
+          <!-- Hero-Text + Call-to-Action -->
+          <div>
+            <p class="text-sm font-semibold tracking-wider text-efly">eine Marke der eFLY</p>
+            <h1 class="mt-3 text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900">
+
+              placeholder 'Brand'
+            </h1>
+            <p class="mt-4 text-base sm:text-lg text-slate-600">
+              Initial Draft OnePager: Referenzen, Team, Prozess & Kontakt. Feedback bitte wenn irgendwas nicht passt.
+            </p>
+            <div class="mt-8">
+              <a href="#kontakt"
+                 class="inline-flex items-center rounded-full bg-efly px-8 py-4 text-base sm:text-lg font-semibold text-white shadow-soft ring-1 ring-efly/20 hover:ring-efly/40 hover:shadow-lg transition transform hover:-translate-y-0.5">
+                Jetzt anfragen
+              </a>
+            </div>            
+          </div>
+
+          <!-- Hero-Video (autoplay, stumm, Loop) -->
+          <div class="relative">
+            <div class="rounded-2xl overflow-hidden shadow-soft border border-slate-200">
+              <video
+                class="block w-full aspect-video object-cover"
+                autoplay muted loop playsinline preload="auto"
+                poster="https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1200&auto=format&fit=crop">
+                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+                Ihr Browser unterstützt das Video-Tag nicht.
+              </video>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Logo-Wall (reine Darstellung, Platzhalter) -->
+    <section id="logos" class="py-20 sm:py-28 border-t border-slate-200 bg-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Ausgewählte Marken</h2>
+        <p class="mt-2 text-slate-600">Platzhalter-Logos – später ersetzen.</p>
+        <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center">
+          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Kundenlogo" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Kundenlogo" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Kundenlogo" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Kundenlogo" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Kundenlogo" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Kundenlogo" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video-Referenzen (Carousel) -->
+    <section id="videos" class="pt-20 sm:pt-28 pb-28 sm:pb-36 bg-gradient-to-b from-white to-efly/[0.04] border-t border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-semibold">Video-Referenzen</h2>
+        <p class="mt-2 text-slate-600">mittlere Video spielt automatisch.</p>
+      </div>
+    </div>
+
+    <div id="video-carousel" class="relative mt-8">
+      <!-- Viewport schneidet den gleitenden Track -->
+      <div id="vid-viewport" class="overflow-x-hidden overflow-y-visible py-4">
+        <!-- Track mit drei gleich breiten Slides -->
+        <div id="vid-track" class="flex will-change-transform transition-transform duration-300 ease-out">
+
+          <!-- LINKES Video (Vorschau + Overlay-Pfeil) -->
+          <div class="basis-1/3 px-2 flex items-center">
+            <div id="left-frame"
+            class="relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">
+              <div id="left-content"></div>
+              <!-- Pfeil-Overlay -->
+              <button id="left-arrow"
+                      class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                      aria-label="Zum vorherigen Video">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-slate-300 shadow">
+                  <i class="fa-solid fa-chevron-left"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+
+         <!-- MITTLERES Video (spielt + Highlight) -->
+<div class="basis-1/2 px-2 flex items-center">
+  <!-- inner orange border -->
+  <div class="rounded-2xl p-[2px] bg-gradient-to-r from-efly/70 to-efly/40">
+    <div id="center-frame" class="relative rounded-xl overflow-hidden border border-white/60 shadow-soft transition">
+      <div id="center-content"></div>
+    </div>
+  </div>
+</div>
+
+
+          <!-- RECHTES Video (Vorschau + Overlay-Pfeil) -->
+          <div class="basis-1/3 px-2 flex items-center">
+            <div id="right-frame"
+            class="relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">
+              <div id="right-content"></div>
+              <!-- Pfeil-Overlay -->
+              <button id="right-arrow"
+                      class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                      aria-label="Zum nächsten Video">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-slate-300 shadow">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+    <!-- Bild-Gitter (Platzhalter) -->
+    <section id="bilder" class="py-20 sm:py-28 bg-slate-50 border-t border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-semibold">Bild-Referenzen</h2>
+            <p class="mt-2 text-slate-600">Platzhalter – später ersetzen.</p>
+          </div>
+          <a href="#kontakt" class="hidden sm:inline-flex text-sm text-efly hover:text-efly">Projekt anfragen →</a>
+        </div>
+        <div class="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <img class="w-full h-48 object-cover rounded-xl" src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Referenzbild 1"/>
+          <img class="w-full h-48 object-cover rounded-xl" src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Referenzbild 2"/>
+          <img class="w-full h-48 object-cover rounded-xl" src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Referenzbild 3"/>
+          <img class="w-full h-48 object-cover rounded-xl" src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Referenzbild 4"/>
+          <img class="w-full h-48 object-cover rounded-xl" src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Referenzbild 5"/>
+          <img class="w-full h-48 object-cover rounded-xl" src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Referenzbild 6"/>
+          <img class="w-full h-48 object-cover rounded-xl" src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Referenzbild 7"/>
+          <img class="w-full h-48 object-cover rounded-xl" src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png" alt="Referenzbild 8"/>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prozess-Teaser (statisch) -->
+    <section id="prozess" class="py-20 sm:py-28 bg-slate-50 border-t border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl sm:text-3xl font-semibold">Ablauf der Zusammenarbeit</h2>
+        <p class="mt-2 text-slate-600">Vier Schritte – Platzhaltertexte.</p>
+        <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="rounded-2xl bg-white/90 backdrop-blur p-6 border border-white/60 shadow-soft hover:shadow-lg transition hover:-translate-y-0.5">
+            <div class="text-sm font-semibold text-efly">01 · Schritt1</div>
+            <h3 class="mt-2 font-semibold text-slate-900">Schritt1</h3>
+            <p class="mt-2 text-sm text-slate-600">Schritt1Erklärung.</p>
+          </div>
+          <div class="rounded-2xl bg-white/90 backdrop-blur p-6 border border-white/60 shadow-soft hover:shadow-lg transition hover:-translate-y-0.5">
+            <div class="text-sm font-semibold text-efly">02 · Schritt2</div>
+            <h3 class="mt-2 font-semibold text-slate-900">Schritt2</h3>
+            <p class="mt-2 text-sm text-slate-600">Schritt2Erklärung.</p>
+          </div>
+          <div class="rounded-2xl bg-white/90 backdrop-blur p-6 border border-white/60 shadow-soft hover:shadow-lg transition hover:-translate-y-0.5">
+            <div class="text-sm font-semibold text-efly">03 · Schritt3</div>
+            <h3 class="mt-2 font-semibold text-slate-900">Schritt3</h3>
+            <p class="mt-2 text-sm text-slate-600">Schritt3Erklärung.</p>
+          </div>
+          <div class="rounded-2xl bg-white/90 backdrop-blur p-6 border border-white/60 shadow-soft hover:shadow-lg transition hover:-translate-y-0.5">
+            <div class="text-sm font-semibold text-efly">04 · Schritt4</div>
+            <h3 class="mt-2 font-semibold text-slate-900">Schritt4</h3>
+            <p class="mt-2 text-sm text-slate-600">Schritt4Erklärung.</p>
+          </div>
+        </div>
+      </div>
+    </section>    
+<!-- Team -->
+<section id="team" class="scroll-mt-24 py-16 sm:py-20 bg-white border-t border-slate-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-semibold">Team (Auszug)</h2>
+        <p class="mt-2 text-slate-600">Später echte Namen, Rollen & Portraits einfügen.</p>
+      </div>
+      <a href="#kontakt" class="hidden sm:inline-flex text-sm text-efly hover:opacity-80">
+        Kontakt →
+      </a>
+    </div>
+
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+        <img class="w-full h-56 object-cover rounded-xl"
+             src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f63627a7ba28632f9a55_Moritz.png"
+             alt="Moritz" />
+        <h3 class="mt-4 font-semibold">Moritz</h3>
+        <p class="text-sm text-slate-600">Geschäftsführung</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+        <img class="w-full h-56 object-cover rounded-xl"
+             src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f66660dd7064712fdc6b_Philipp.png"
+             alt="Phillipp" />
+        <h3 class="mt-4 font-semibold">Phillipp</h3>
+        <p class="text-sm text-slate-600">Head of People and Culture</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
+        <img class="w-full h-56 object-cover rounded-xl"
+             src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f67e7f1370c520ce363f_Paul.png"
+             alt="Paul" />
+        <h3 class="mt-4 font-semibold">Paul</h3>
+        <p class="text-sm text-slate-600">Head of Troubleshooting</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- Footer mit Kontakt, Socials und Impressum-Dropdown -->
+    <footer id="kontakt" class="scroll-mt-24 py-8 border-t border-[#3b3b3b] bg-[#454545] text-white">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <!-- Zeile 1: Copyright · Kontakt-Buttons · Social Links -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <div class="text-sm text-white/80">
+            © <span id="y"></span> eFLY · Eine Marke der eFLY
+          </div>
+
+          <div class="flex flex-wrap gap-3 md:justify-center">
+            <a href="mailto:kontakt@efly-amz.com?subject=Anfrage%20One-Pager" class="inline-flex items-center rounded-xl bg-efly hover:opacity-90 text-white px-4 py-2 text-sm font-medium shadow-soft">E-Mail: kontakt@efly-amz.com</a>
+            <a href="tel:+4971150426681" class="inline-flex items-center rounded-xl bg-efly hover:opacity-90 text-white px-4 py-2 text-sm font-medium shadow-soft">Telefon: +49 (0)711 50426681</a>
+          </div>
+
+          <div class="flex items-center gap-6 md:justify-end">
+            <a href="https://www.instagram.com/efly_marketplace_services/?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D#" target="_blank" rel="noopener" aria-label="Instagram" class="group">
+              <i class="fa-brands fa-instagram text-pink-600 text-xl group-hover:opacity-80"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCgopiZDWWF7__bN8EF2V7VA" target="_blank" rel="noopener" aria-label="YouTube" class="group">
+              <i class="fa-brands fa-youtube text-red-600 text-xl group-hover:opacity-80"></i>
+            </a>
+            <a href="https://www.tiktok.com/@eflyamazonagency?_t=8hDSHjTKygq&_r=1" target="_blank" rel="noopener" aria-label="TikTok" class="group">
+              <i class="fa-brands fa-tiktok text-black text-xl group-hover:opacity-80"></i>
+            </a>
+            <a href="https://www.linkedin.com/company/efly-gmbh/posts/?feedView=all" target="_blank" rel="noopener" aria-label="LinkedIn" class="group">
+              <i class="fa-brands fa-linkedin text-blue-600 text-xl group-hover:opacity-80"></i>
+            </a>
+          </div>          
+        </div>
+
+        <!-- Zeile 2: Impressum als Dropdown, Datenschutz/AGB als Links -->
+        <div class="mt-6 flex flex-wrap items-center gap-6 text-sm">
+          <button id="toggle-impressum"
+        class="inline-flex items-center gap-2 text-white/80 hover:text-white"
+        aria-expanded="false" aria-controls="impressum">
+            <span>Impressum</span>
+            <svg class="chev h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd"
+                    d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 011.08 1.04l-4.25 4.25a.75.75 0 01-1.06 0L5.25 8.27a.75.75 0 01-.02-1.06z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </button>
+
+          <!-- Externe/Platzhalter-Links -->
+          <a href="https://www.efly-amz.com/datenschutz"class="text-white/80 hover:text-white" rel="noopener">Datenschutz</a>
+          <a href="https://www.efly-amz.com/agb"class="text-white/80 hover:text-white" rel="noopener">AGB</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Ausklappbarer Impressum-Block (standardmäßig verborgen) -->
+    <section id="impressum" class="hidden py-16 bg-slate-50 border-t border-slate-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold">Impressum</h2>
+        <p class="mt-2 text-sm text-slate-600">Platzhaltertext.</p>
+        <div class="mt-6 space-y-2 text-sm text-slate-700">
+          <p><strong>Unternehmen:</strong> eFLY Marketplace Services GmbH</p>
+          <p><strong>Adresse:</strong> Neckarstraße 189-191 70190 Stuttgart</p>
+          <p><strong>Ansprechpartner:</strong> Moritz Heller und Jonas Lamneck</p>
+          <p><strong>Handelsregister:</strong> HRB 731079</p>
+          <p><strong>USt-IdNr.:</strong> DE296767410</p>
+          <p><strong>Kontakt:</strong> Tel.: +49 (0)711 50426681 · E-Mail: kontakt@efly-amz.com</p>
+          <p><strong>OS-Plattform:</strong> http://ec.europa.eu/consumers/odr</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lokale Datenschutz/AGB-Sektionen wurden entfernt und extern verlinkt -->
+    <section id="datenschutz" class="hidden py-16 bg-white border-t border-slate-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold">Datenschutzerklärung</h2>
+        <p class="mt-2 text-sm text-slate-600">Platzhaltertext.</p>
+        <div class="mt-6 space-y-4 text-sm text-slate-700">
+          <p>Kontakt: <a class="text-brand-700 hover:text-brand-800" href="mailto:kontakt@efly-amz.com">kontakt@efly-amz.com</a></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="agb" class="hidden py-16 bg-white border-t border-slate-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-semibold">Allgemeine Geschäftsbedingungen (AGB)</h2>
+        <p class="mt-2 text-sm text-slate-600">Platzhaltertext.</p>
+        <div class="mt-6 space-y-4 text-sm text-slate-700">
+          <p>Inhalt folgt.</p>
+        </div>
+      </div>
+    </section>
+
+    <script>
+      /* Mobiles Menü ein-/ausklappen (ARIA-Status pflegen) */
+      const btn = document.getElementById('menu-btn');
+      const menu = document.getElementById('mobile-menu');
+      if (btn && menu) {
+        btn.addEventListener('click', () => {
+          menu.classList.toggle('hidden');
+          btn.setAttribute('aria-expanded', menu.classList.contains('hidden') ? 'false' : 'true');
+        });
+      }
+
+      /* Jahreszahl im Footer automatisch setzen */
+      const yearEl = document.getElementById('y');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      /* Impressum-Dropdown steuern + Pfeil-Status (aria-expanded) setzen */
+      const impBtn = document.getElementById('toggle-impressum');
+      const impSec = document.getElementById('impressum');
+      if (impBtn && impSec) {
+        impBtn.addEventListener('click', () => {
+          const willOpen = impSec.classList.contains('hidden'); // Zustand vor dem Klick
+          impSec.classList.toggle('hidden');                    // Sichtbarkeit umschalten
+          impBtn.setAttribute('aria-expanded', String(willOpen));
+          if (willOpen) impSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+
+/* Video-Carousel (Pfeile auf den Videos, Mitte hervorgehoben) */
+(function () {
+  const track        = document.getElementById('vid-track');
+  const leftFrame    = document.getElementById('left-frame');
+  const centerFrame  = document.getElementById('center-frame');
+  const rightFrame   = document.getElementById('right-frame');
+  const leftContent  = document.getElementById('left-content');
+  const centerContent= document.getElementById('center-content');
+  const rightContent = document.getElementById('right-content');
+  const leftArrow    = document.getElementById('left-arrow');
+  const rightArrow   = document.getElementById('right-arrow');
+  if (!track || !leftFrame || !centerFrame || !rightFrame) return;
+
+  // Deine Videos
+  const videoItems = [
+    { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      poster: "https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png",
+      label: "Big Buck Bunny" },
+    { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      poster: "https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png",
+      label: "Elephants Dream" },
+    { src: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+      poster: "https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png",
+      label: "For Bigger Blazes" }
+  ];
+  if (!videoItems.length) return;
+
+  const mod = (n, m) => ((n % m) + m) % m;
+  let index = 0;                // Index des mittleren Videos
+  let animating = false;
+  const DURATION = 520;         // ms
+  const SHIFT = '-33.333%';     // um 1 Slide verschieben
+
+  function videoHTML(item, { center = false } = {}) {
+    if (center) {
+      return `
+        <video class="block w-full aspect-video object-cover"
+               autoplay muted loop playsinline preload="auto" poster="${item.poster}">
+          <source src="${item.src}" type="video/mp4" />
+        </video>`;
+    }
+    return `
+      <video class="block w-full aspect-video object-cover"
+             muted playsinline preload="metadata" poster="${item.poster}">
+        <source src="${item.src}" type="video/mp4" />
+      </video>`;
+  }
+
+  function render() {
+    const leftIndex  = mod(index - 1, videoItems.length);
+    const rightIndex = mod(index + 1, videoItems.length);
+
+    leftContent.innerHTML   = videoHTML(videoItems[leftIndex],  { center: false });
+    centerContent.innerHTML = videoHTML(videoItems[index],      { center: true  });
+    rightContent.innerHTML  = videoHTML(videoItems[rightIndex], { center: false });
+
+    const v = centerContent.querySelector('video');
+    if (v) v.play().catch(() => {});
+  }
+
+  function slide(direction) {
+    if (animating) return;
+    animating = true;
+
+    track.style.transform = `translateX(${direction === 'next' ? SHIFT : '33.333%'})`;
+
+    setTimeout(() => {
+      index = mod(index + (direction === 'next' ? 1 : -1), videoItems.length);
+      render();
+
+      // Transition kurz aus, Position zurücksetzen, wieder an
+      track.style.transition = 'none';
+      track.style.transform  = 'translateX(0)';
+      track.getBoundingClientRect();
+      track.style.transition = '';
+      animating = false;
+    }, DURATION);
+  }
+
+  render();
+
+  // Klick auf Pfeile ODER auf die Vorschau-Frames selbst
+  [leftArrow, leftFrame].forEach(el => el && el.addEventListener('click', () => slide('prev')));
+  [rightArrow, rightFrame].forEach(el => el && el.addEventListener('click', () => slide('next')));
+
+  // Keyboard (optional)
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') slide('next');
+    if (e.key === 'ArrowLeft')  slide('prev');
+  });
+})();
+
+    </script>
+  </body>
+</html>
