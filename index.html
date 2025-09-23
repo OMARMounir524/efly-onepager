@@ -41,12 +41,38 @@
       /* Sanftes Scrollen bei Anker-Links und kleines „DRAFT“-Badge fixieren */
       html { scroll-behavior: smooth; }
       .draft-badge { position: fixed; top: 12px; left: 12px; z-index: 50; }
-    </style>
+    
+/* ---- Process (Ablauf) scroll-driven reveal ---- */
+.process-pin { position: sticky; top: 18vh; } /* keeps the grid in view while scrolling */
+@media (max-width: 1023px) { .process-pin { top: 10vh; } }
+
+.process-stage { --p: 0; } /* progress [0..1] set from JS */
+
+.process-rail { position: relative; }
+.process-rail .rail,
+.process-rail .rail-fill {
+  position: absolute; left: 1.25rem; right: 1.25rem; top: 50%;
+  height: 2px; transform-origin: left center;
+}
+.process-rail .rail { background: rgba(240,123,22,0.12); }
+.process-rail .rail-fill { background: rgba(240,123,22,0.6); transform: scaleX(var(--p)); transition: transform 80ms linear; }
+@media (max-width: 1023px) {
+  .process-rail .rail, .process-rail .rail-fill { display: none; }
+}
+
+/* Step cards: hidden by default, reveal smoothly */
+.stepcard { 
+  opacity: 0; transform: translateY(14px) scale(.98);
+  transition: opacity .35s ease, transform .35s ease, box-shadow .25s ease;
+  will-change: opacity, transform;
+}
+.stepcard.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+.stepcard:hover { box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+
+    </style>    
   </head>
 
   <body class="antialiased text-slate-800">
-    <!-- Hinweis-Badge oben links -->
-    <div class="draft-badge px-2 py-1 text-xs font-medium rounded bg-yellow-200 text-yellow-900 shadow">DRAFT</div>
 
     <!-- Kopfbereich mit Navigation -->
     <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-200">
@@ -152,30 +178,97 @@
       </div>
     </section>
 
-    <!-- Video-Beispiele (Carousel) -->
     <section id="videos" class="pt-20 sm:pt-28 pb-28 sm:pb-36 bg-gradient-to-b from-white to-efly/[0.04] border-t border-slate-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-end justify-between gap-4">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-semibold">Amazon Video Ads</h2>
+            <p class="mt-2 text-slate-600">Poster wird angezeigt – Video spielt beim Hover.</p>
+          </div>
+        </div>
+    
+        <!-- 3-per-row grid -->
+        <div id="video-grid" class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+    
+          <!-- One card = poster + video that plays on hover -->
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+            <div class="aspect-video relative">
+              <video class="hover-video absolute inset-0 h-full w-full object-cover"
+                     muted playsinline preload="none"
+                     poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/Muus_to_Chooze_p01ba1.jpg">
+                <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/Muus_to_choose_vb0jj6.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </article>
+    
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+            <div class="aspect-video relative">
+              <video class="hover-video absolute inset-0 h-full w-full object-cover"
+                     muted playsinline preload="none"
+                     poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/FeelFood_fnjjnh.jpg">
+                <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/FEEL_FOOD_V2.1_vnrcdi.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </article>
+    
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+            <div class="aspect-video relative">
+              <video class="hover-video absolute inset-0 h-full w-full object-cover"
+                     muted playsinline preload="none"
+                     poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/CS_Clasen_ndrlch.jpg">
+                <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/CW_Claasen_jumvv0.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </article>
+    
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+            <div class="aspect-video relative">
+              <video class="hover-video absolute inset-0 h-full w-full object-cover"
+                     muted playsinline preload="none"
+                     poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481363/Dr._Beckmann_mzskqt.jpg">
+                <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/260225_-_Dr.Beckmann_-_Final_DE_crbtc6.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </article>
+    
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+            <div class="aspect-video relative">
+              <video class="hover-video absolute inset-0 h-full w-full object-cover"
+                     muted playsinline preload="none"
+                     poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481363/Afri_Cola_f6pqt9.jpg">
+                <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/AFRI_ui4vc4.mp4" type="video/mp4" />
+              </video>
+            </div>
+          </article>
+    
+          <!-- Add more cards if you add more videos -->
+        </div>
+      </div>
+    </section>
+    
+
+<!-- Content Beispiele (Carousel, same shell as the old video carousel) -->
+<section id="bilder" class="pt-20 sm:pt-28 pb-28 sm:pb-36 bg-slate-50 border-t border-slate-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-end justify-between gap-4">
       <div>
-        <h2 class="text-2xl sm:text-3xl font-semibold">Amazon Video Ads</h2>
+        <h2 class="text-2xl sm:text-3xl font-semibold">Content Beispiele</h2>
+        <p class="mt-2 text-slate-600">Durchklicken – mittlere Karte hervorgehoben.</p>
       </div>
     </div>
 
-    <div id="video-carousel" class="relative mt-8">
-      <!-- Viewport schneidet den gleitenden Track -->
-      <div id="vid-viewport" class="overflow-x-hidden overflow-y-visible py-4">
-        <!-- Track mit drei gleich breiten Slides -->
-        <div id="vid-track" class="flex will-change-transform transition-transform duration-300 ease-out">
+    <div id="content-carousel" class="relative mt-8">
+      <div id="content-viewport" class="overflow-x-hidden overflow-y-visible py-4">
+        <div id="content-track" class="flex will-change-transform transition-transform duration-300 ease-out">
 
-          <!-- LINKES Video (Vorschau + Overlay-Pfeil) -->
-          <div class="basis-1/3 px-2 flex items-center">
-            <div id="left-frame"
-            class="relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">
-              <div id="left-content"></div>
-              <!-- Pfeil-Overlay -->
-              <button id="left-arrow"
+          <!-- LEFT card (dimmed + arrow) -->
+          <div class="basis-1/3 px-2 flex items-center min-w-0">
+            <div id="content-left-frame"
+            class="w-full relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">             
+              <div id="content-left"></div>
+              <button id="content-left-arrow"
                       class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-                      aria-label="Zum vorherigen Video">
+                      aria-label="Zur vorherigen Karte">
                 <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-slate-300 shadow">
                   <i class="fa-solid fa-chevron-left"></i>
                 </span>
@@ -183,26 +276,23 @@
             </div>
           </div>
 
-         <!-- MITTLERES Video (spielt + Highlight) -->
-<div class="basis-1/2 px-2 flex items-center">
-  <!-- inner orange border -->
-  <div class="rounded-2xl p-[2px] bg-gradient-to-r from-efly/70 to-efly/40">
-    <div id="center-frame" class="relative rounded-xl overflow-hidden border border-white/60 shadow-soft transition">
-      <div id="center-content"></div>
-    </div>
-  </div>
-</div>
+          <!-- CENTER card (highlighted) -->
+          <div class="basis-1/2 px-2 flex items-center min-w-0">
+            <div class="w-full rounded-2xl p-[2px] bg-gradient-to-r from-efly/70 to-efly/40">
+              <div id="content-center-frame" class="w-full relative rounded-xl overflow-hidden border border-white/60 shadow-soft transition">
+                <div id="content-center"></div>
+              </div>
+            </div>
+          </div>          
 
-
-          <!-- RECHTES Video (Vorschau + Overlay-Pfeil) -->
-          <div class="basis-1/3 px-2 flex items-center">
-            <div id="right-frame"
-            class="relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">
-              <div id="right-content"></div>
-              <!-- Pfeil-Overlay -->
-              <button id="right-arrow"
+          <!-- RIGHT card (dimmed + arrow) -->
+          <div class="basis-1/3 px-2 flex items-center min-w-0">
+            <div id="content-right-frame"
+            class="w-full relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">       
+              <div id="content-right"></div>
+              <button id="content-right-arrow"
                       class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-                      aria-label="Zum nächsten Video">
+                      aria-label="Zur nächsten Karte">
                 <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-slate-300 shadow">
                   <i class="fa-solid fa-chevron-right"></i>
                 </span>
@@ -217,214 +307,95 @@
   </div>
 </section>
 
-<!-- Content Beispiele (3 per row, big cards, last row centered) -->
-<section id="bilder" class="py-20 sm:py-28 bg-slate-50 border-t border-slate-200">
-  <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-end justify-between gap-4">
-      <div>
-        <h2 class="text-2xl sm:text-3xl font-semibold">Content Beispiele</h2>
-      </div>
-      <a href="#kontakt" class="hidden sm:inline-flex text-sm text-efly hover:text-efly">Projekt anfragen →</a>
-    </div>
 
-    <!-- Grid: 1 col mobile, 2 cols tablet, 3 cols desktop -->
-    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+ <!-- Prozess (vertical list + scroll progress bar) -->
+<section id="prozess" class="py-20 sm:py-28 bg-white border-t border-slate-200">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-2xl sm:text-3xl font-semibold">Ablauf der Zusammenarbeit</h2>
 
-      <!-- Card 1 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/07_Ma%CC%88rklin_Markengeschichte_ufvqkz.png" alt="Märklin Markengeschichte"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/07_Ma%CC%88rklin_Markengeschichte_ufvqkz.png" alt="Märklin Markengeschichte Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
+    <div id="prozess-stage" class="relative mt-10">
+      <!-- vertical progress rail (left) -->
+      <div class="absolute left-2 sm:left-4 top-0 bottom-0 w-1 bg-slate-200 rounded-full"></div>
+      <div class="progress-fill absolute left-2 sm:left-4 top-0 w-1 bg-efly rounded-full" style="height:0;"></div>
 
-      <!-- Card 2 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/01_STUR_Galeriebilder_m17hws.png" alt="STUR Galeriebilder"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/01_STUR_Galeriebilder_m17hws.png" alt="STUR Galeriebilder Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
+      <!-- steps stack -->
+      <ol class="ml-8 sm:ml-12 space-y-6">
+        <!-- Step 1 -->
+        <li class="stepcard">
+          <div class="rounded-xl bg-white border border-slate-200 shadow-soft p-5">
+            <div class="text-sm font-semibold text-efly">Schritt 1</div>
+            <h3 class="mt-1 font-semibold text-slate-900">Gemeinsame definierung der KPIs</h3>
+          </div>
+        </li>
 
-      <!-- Card 3 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/03_everydays_Galeriebilder_vbq1gw.png" alt="everydays Galeriebilder"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/03_everydays_Galeriebilder_vbq1gw.png" alt="everydays Galeriebilder Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
+        <!-- Step 2 -->
+        <li class="stepcard">
+          <div class="rounded-xl bg-white border border-slate-200 shadow-soft p-5">
+            <div class="text-sm font-semibold text-efly">Schritt 2</div>
+            <h3 class="mt-1 font-semibold text-slate-900">Produkt Schulung</h3>
+          </div>
+        </li>
 
-      <!-- Card 4 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/10_Liquid_Elements_Brand_Store_wv7hez.png" alt="Liquid Elements Brand Store"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/10_Liquid_Elements_Brand_Store_wv7hez.png" alt="Liquid Elements Brand Store Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
+        <!-- Step 3 -->
+        <li class="stepcard">
+          <div class="rounded-xl bg-white border border-slate-200 shadow-soft p-5">
+            <div class="text-sm font-semibold text-efly">Schritt 3</div>
+            <h3 class="mt-1 font-semibold text-slate-900">Weekly Call</h3>
+          </div>
+        </li>
 
-      <!-- Card 5 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/06_Palado_Markengeschichte_g0mlpa.png" alt="Palado Markengeschichte"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/06_Palado_Markengeschichte_g0mlpa.png" alt="Palado Markengeschichte Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
-
-      <!-- Card 6 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/08_Festool_Brand_Store_c4cnz3.png" alt="Festool Brand Store"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/08_Festool_Brand_Store_c4cnz3.png" alt="Festool Brand Store Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
-
-      <!-- Card 7 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/05_IONIQ_A_Content_wobhk5.png" alt="IONIQ A+ Content"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/05_IONIQ_A_Content_wobhk5.png" alt="IONIQ A+ Content Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
-
-      <!-- Card 8 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/09_Dr._Beckmann_Brand_Store_djyayg.png" alt="Dr. Beckmann Brand Store"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/09_Dr._Beckmann_Brand_Store_djyayg.png" alt="Dr. Beckmann Brand Store Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
-
-      <!-- Card 9 -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/02_MaHo_Galeriebilder_t2qlk9.png" alt="MaHo Galeriebilder"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/02_MaHo_Galeriebilder_t2qlk9.png" alt="MaHo Galeriebilder Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
-
-      <!-- Card 10 (single centered on last row at lg: 3 cols) -->
-      <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft transition-transform duration-300 will-change-transform hover:scale-[1.20] md:hover:scale-[1.22] hover:shadow-lg lg:col-start-2">
-        <div class="aspect-video relative">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/04_Juno_me_A_Content_wgcuaj.png" alt="juno&me A+ Content"
-               class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300 group-hover:opacity-0">
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/04_Juno_me_A_Content_wgcuaj.png" alt="juno&me A+ Content Poster"
-               class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        </div>
-      </article>
-
+        <!-- Step 4 -->
+        <li class="stepcard">
+          <div class="rounded-xl bg-white border border-slate-200 shadow-soft p-5">
+            <div class="text-sm font-semibold text-efly">Schritt 4</div>
+            <h3 class="mt-1 font-semibold text-slate-900">Gemeinsame Ziele ereichen</h3>
+          </div>
+        </li>
+      </ol>
     </div>
   </div>
 </section>
 
+    
 
-    <!-- Prozess-Teaser (statisch) -->
-    <section id="prozess" class="py-20 sm:py-28 bg-slate-50 border-t border-slate-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl sm:text-3xl font-semibold">Ablauf der Zusammenarbeit</h2>
-        <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="rounded-2xl bg-white/90 backdrop-blur p-6 border border-white/60 shadow-soft hover:shadow-lg transition hover:-translate-y-0.5">
-            <div class="text-sm font-semibold text-efly">Schritt 1</div>
-            <h3 class="mt-2 font-semibold text-slate-900">Gemeinsame definierung der KPIs</h3>
-          </div>
-          <div class="rounded-2xl bg-white/90 backdrop-blur p-6 border border-white/60 shadow-soft hover:shadow-lg transition hover:-translate-y-0.5">
-            <div class="text-sm font-semibold text-efly">Schritt 2</div>
-            <h3 class="mt-2 font-semibold text-slate-900">Produkt Schulung</h3>
-          </div>
-          <div class="rounded-2xl bg-white/90 backdrop-blur p-6 border border-white/60 shadow-soft hover:shadow-lg transition hover:-translate-y-0.5">
-            <div class="text-sm font-semibold text-efly"> Schritt 3</div>
-            <h3 class="mt-2 font-semibold text-slate-900">Weekly Call</h3>
-          </div>
-          <div class="rounded-2xl bg-white/90 backdrop-blur p-6 border border-white/60 shadow-soft hover:shadow-lg transition hover:-translate-y-0.5">
-            <div class="text-sm font-semibold text-efly">Schritt 4</div>
-            <h3 class="mt-2 font-semibold text-slate-900">Gemeinsame Ziele ereichen</h3>
-          </div>
-        </div>
-      </div>
-    </section>    
-<!-- Team (Carousel) -->
+<!-- Team (Static 3-up) -->
 <section id="team" class="py-20 sm:py-28 bg-gradient-to-b from-white to-efly/[0.04] border-t border-slate-200">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-end justify-between gap-4">
       <div>
         <h2 class="text-2xl sm:text-3xl font-semibold">Ansprechpartner</h2>
       </div>
-      <a href="#kontakt" class="hidden sm:inline-flex text-sm text-efly hover:opacity-80">
-        Kontakt →
-      </a>
+      <a href="#kontakt" class="hidden sm:inline-flex text-sm text-efly hover:opacity-80">Kontakt →</a>
     </div>
 
-    <!-- Team Carousel -->
-    <div id="team-carousel" class="relative mt-8">
-      <div id="team-viewport" class="overflow-x-hidden overflow-y-hidden h-auto py-4">
-        <div id="team-track" class="flex items-center justify-center gap-0 will-change-transform transition-transform duration-300 ease-out">
-          
-<!-- LEFT profile (dimmed + arrow) -->
-<div class="basis-1/3 px-2 flex items-center justify-center">
-  <div id="team-left-frame"
-       class="relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow transform-gpu transition cursor-pointer
-              opacity-75 scale-[0.94] md:scale-[0.92]">
-    <div id="team-left-content"></div>
-    <button id="team-left-arrow"
-            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-            aria-label="Zum vorherigen Profil">
-      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-slate-300 shadow">
-        <i class="fa-solid fa-chevron-left"></i>
-      </span>
-    </button>
-  </div>
-</div>
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Adrian -->
+      <div class="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg">
+        <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f702180be25a62e77e3c_Adi.png"
+             alt="Adrian Aubele"
+             class="mx-auto h-56 w-56 object-cover rounded-full" />
+        <h3 class="mt-6 font-semibold text-slate-900">Adrian Aubele</h3>
+        <p class="text-sm text-slate-600">Prokurist</p>
+      </div>
 
-<!-- CENTER profile (highlighted) -->
-<div class="basis-1/3 px-2 flex items-center justify-center">
-  <div class="transform-gpu scale-[1.06] md:scale-[1.10]">
-    <div class="rounded-2xl p-[2px] bg-gradient-to-r from-efly/70 to-efly/40">
-      <div id="team-center-frame"
-           class="relative rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-lg ring-2 ring-efly/40 z-10">
-        <div id="team-center-content"></div>
+      <!-- Moritz -->
+      <div class="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg">
+        <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f63627a7ba28632f9a55_Moritz.png"
+             alt="Moritz"
+             class="mx-auto h-56 w-56 object-cover rounded-full" />
+        <h3 class="mt-6 font-semibold text-slate-900">Moritz</h3>
+        <p class="text-sm text-slate-600">Geschäftsführung</p>
+      </div>
+
+      <!-- Jonas -->
+      <div class="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg">
+        <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f6544cd0d77b0c433510_Jonas.png"
+             alt="Jonas Lamneck"
+             class="mx-auto h-56 w-56 object-cover rounded-full" />
+        <h3 class="mt-6 font-semibold text-slate-900">Jonas Lamneck</h3>
+        <p class="text-sm text-slate-600">Co-Geschäftsführung</p>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- RIGHT profile (dimmed + arrow) -->
-<div class="basis-1/3 px-2 flex items-center justify-center">
-  <div id="team-right-frame"
-       class="relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow transform-gpu transition cursor-pointer
-              opacity-75 scale-[0.94] md:scale-[0.92]">
-    <div id="team-right-content"></div>
-    <button id="team-right-arrow"
-            class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-            aria-label="Zum nächsten Profil">
-      <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-slate-300 shadow">
-        <i class="fa-solid fa-chevron-right"></i>
-      </span>
-    </button>
-  </div>
-</div>
-
-
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -446,18 +417,19 @@
 
           <div class="flex items-center gap-6 md:justify-end">
             <a href="https://www.instagram.com/efly_marketplace_services/?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D#" target="_blank" rel="noopener" aria-label="Instagram" class="group">
-              <i class="fa-brands fa-instagram text-pink-600 text-xl group-hover:opacity-80"></i>
+              <i class="fa-brands fa-instagram text-white text-xl opacity-80 transition group-hover:opacity-100"></i>
             </a>
             <a href="https://www.youtube.com/channel/UCgopiZDWWF7__bN8EF2V7VA" target="_blank" rel="noopener" aria-label="YouTube" class="group">
-              <i class="fa-brands fa-youtube text-red-600 text-xl group-hover:opacity-80"></i>
+              <i class="fa-brands fa-youtube text-white text-xl opacity-80 transition group-hover:opacity-100"></i>
             </a>
             <a href="https://www.tiktok.com/@eflyamazonagency?_t=8hDSHjTKygq&_r=1" target="_blank" rel="noopener" aria-label="TikTok" class="group">
-              <i class="fa-brands fa-tiktok text-black text-xl group-hover:opacity-80"></i>
+              <i class="fa-brands fa-tiktok text-white text-xl opacity-80 transition group-hover:opacity-100"></i>
             </a>
             <a href="https://www.linkedin.com/company/efly-gmbh/posts/?feedView=all" target="_blank" rel="noopener" aria-label="LinkedIn" class="group">
-              <i class="fa-brands fa-linkedin text-blue-600 text-xl group-hover:opacity-80"></i>
+              <i class="fa-brands fa-linkedin text-white text-xl opacity-80 transition group-hover:opacity-100"></i>
             </a>
-          </div>          
+          </div>
+                 
         </div>
 
         <!-- Zeile 2: Impressum als Dropdown, Datenschutz/AGB als Links -->
@@ -545,186 +517,99 @@
         });
       }
 
-/* Video-Carousel (Pfeile auf den Videos, Mitte hervorgehoben) */
+/* Video grid: play on hover, pause on leave */
+/* Video grid: play on hover, restore poster on leave */
 (function () {
-  const track        = document.getElementById('vid-track');
-  const leftFrame    = document.getElementById('left-frame');
-  const centerFrame  = document.getElementById('center-frame');
-  const rightFrame   = document.getElementById('right-frame');
-  const leftContent  = document.getElementById('left-content');
-  const centerContent= document.getElementById('center-content');
-  const rightContent = document.getElementById('right-content');
-  const leftArrow    = document.getElementById('left-arrow');
-  const rightArrow   = document.getElementById('right-arrow');
-  if (!track || !leftFrame || !centerFrame || !rightFrame) return;
+  const vids = document.querySelectorAll('.hover-video');
 
-  // Deine Videos
-  const videoItems = [
-  {
-    src: "https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/Muus_to_choose_vb0jj6.mp4",
-    poster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/Muus_to_Chooze_p01ba1.jpg",
-    label: "Muus to Choose"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/FEEL_FOOD_V2.1_vnrcdi.mp4",
-    poster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/FeelFood_fnjjnh.jpg",
-    label: "FEEL FOOD"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/CW_Claasen_jumvv0.mp4",
-    poster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/CS_Clasen_ndrlch.jpg",
-    label: "CW Claasen"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/260225_-_Dr.Beckmann_-_Final_DE_crbtc6.mp4",
-    poster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758481363/Dr._Beckmann_mzskqt.jpg",
-    label: "Dr. Beckmann (DE)"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/AFRI_ui4vc4.mp4",
-    poster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758481363/Afri_Cola_f6pqt9.jpg",
-    label: "AFRI"
-  }
-];
+  // If a card scrolls out of view, stop it and restore the poster
+  const io = ('IntersectionObserver' in window)
+    ? new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          const v = e.target;
+          if (!e.isIntersecting) {
+            try {
+              v.pause();
+              v.currentTime = 0;   // reset to start
+              v.load();            // force "pre-play" state so the poster shows again
+            } catch {}
+          }
+        });
+      }, { threshold: 0.1 })
+    : null;
 
-  if (!videoItems.length) return;
+  vids.forEach(v => {
+    v.addEventListener('mouseenter', () => {
+      // ensure we’re not stuck in a loaded-but-paused frame
+      // (optional but helps some mobile browsers)
+      if (v.readyState === 0) { try { v.load(); } catch {} }
+      v.play().catch(()=>{});
+    });
 
-  const mod = (n, m) => ((n % m) + m) % m;
-  let index = 0;                // Index des mittleren Videos
-  let animating = false;
-  const DURATION = 520;         // ms
-  const SHIFT = '-33.333%';     // um 1 Slide verschieben
+    v.addEventListener('mouseleave', () => {
+      try {
+        v.pause();
+        v.currentTime = 0; // go to start
+        v.load();          // show the poster again
+      } catch {}
+    });
 
-  function videoHTML(item, { center = false } = {}) {
-  // item.src is your Cloudinary MP4 URL (with f_mp4,q_auto,vc_auto/… .mp4)
-  const mp4  = item.src;
-  const webm = item.src
-    .replace(/f_mp4/g, 'f_webm')
-    .replace(/vc_auto/g, 'vc_vp9')
-    .replace(/\.mp4(\?|$)/, '.webm$1');
-
-  // If you still see jank, switch 'metadata' -> 'none' on the side cards.
-  const preload = center ? 'auto' : 'metadata';
-
-  return `
-    <video class="block w-full aspect-video object-cover"
-           ${center ? 'autoplay' : ''} muted playsinline
-           preload="${preload}" poster="${item.poster}">
-      <source src="${webm}" type="video/webm" />
-      <source src="${mp4}"  type="video/mp4" />
-    </video>
-  `;
-}
-
-  function render() {
-    const leftIndex  = mod(index - 1, videoItems.length);
-    const rightIndex = mod(index + 1, videoItems.length);
-
-    leftContent.innerHTML   = videoHTML(videoItems[leftIndex],  { center: false });
-    centerContent.innerHTML = videoHTML(videoItems[index],      { center: true  });
-    rightContent.innerHTML  = videoHTML(videoItems[rightIndex], { center: false });
-
-    const v = centerContent.querySelector('video');
-    if (v) v.play().catch(() => {});
-  }
-
-  function slide(direction) {
-  if (animating) return;
-  animating = true;
-
-  // Pause the currently playing center video before animating
-  const current = centerContent.querySelector('video');
-  if (current && !current.paused) {
-    try { current.pause(); } catch {}
-  }
-
-  track.style.transform = `translateX(${direction === 'next' ? SHIFT : '33.333%'})`;
-
-  setTimeout(() => {
-    index = mod(index + (direction === 'next' ? 1 : -1), videoItems.length);
-    render(); // this injects the new center video
-
-    // Snap back without jank
-    track.style.transition = 'none';
-    track.style.transform  = 'translateX(0)';
-    track.getBoundingClientRect();
-    track.style.transition = '';
-    animating = false;
-  }, DURATION);
-}
-
-
-  render();
-
-  // Klick auf Pfeile ODER auf die Vorschau-Frames selbst
-  [leftArrow, leftFrame].forEach(el => el && el.addEventListener('click', () => slide('prev')));
-  [rightArrow, rightFrame].forEach(el => el && el.addEventListener('click', () => slide('next')));
-
-  // Keyboard (optional)
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight') slide('next');
-    if (e.key === 'ArrowLeft')  slide('prev');
+    if (io) io.observe(v);
   });
 })();
-/* Team Carousel (center highlighted, sides dimmed + arrows) */
+
+/* Content Beispiele Carousel (image cards, same shell as old video carousel) */
 (function () {
-  const track        = document.getElementById('team-track');
-  const leftFrame    = document.getElementById('team-left-frame');
-  const centerFrame  = document.getElementById('team-center-frame');
-  const rightFrame   = document.getElementById('team-right-frame');
-  const leftContent  = document.getElementById('team-left-content');
-  const centerContent= document.getElementById('team-center-content');
-  const rightContent = document.getElementById('team-right-content');
-  const leftArrow    = document.getElementById('team-left-arrow');
-  const rightArrow   = document.getElementById('team-right-arrow');
+  const track        = document.getElementById('content-track');
+  const leftFrame    = document.getElementById('content-left-frame');
+  const centerFrame  = document.getElementById('content-center-frame');
+  const rightFrame   = document.getElementById('content-right-frame');
+  const leftContent  = document.getElementById('content-left');
+  const centerContent= document.getElementById('content-center');
+  const rightContent = document.getElementById('content-right');
+  const leftArrow    = document.getElementById('content-left-arrow');
+  const rightArrow   = document.getElementById('content-right-arrow');
   if (!track || !leftFrame || !centerFrame || !rightFrame) return;
 
-  // Team-Daten (du kannst beliebig erweitern)
-  const teamMembers = [
-    {
-      img: "https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f63627a7ba28632f9a55_Moritz.png",
-      name: "Moritz",
-      role: "Geschäftsführung"
-    },
-    {
-      img: "https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f6544cd0d77b0c433510_Jonas.png",
-      name: "Jonas Lamneck",
-      role: "Co-Geschäftsführung"
-    },
-    {
-      img: "https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f702180be25a62e77e3c_Adi.png",
-      name: "Adrian Aubele",
-      role: "Prokurist"
-    }
-  ];
-  if (!teamMembers.length) return;
+  // Same images you used before (16:9)
+  const contentItems = [
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/07_Ma%CC%88rklin_Markengeschichte_ufvqkz.png", alt: "Märklin Markengeschichte", href: "https://www.maerklinshop.de/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/01_STUR_Galeriebilder_m17hws.png", alt: "STUR Galeriebilder", href: "https://sturcookware.de/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/03_everydays_Galeriebilder_vbq1gw.png", alt: "everydays Galeriebilder", href: "https://www.everydays.de/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/10_Liquid_Elements_Brand_Store_wv7hez.png", alt: "Liquid Elements Brand Store", href: "https://www.liquidelements.de/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/06_Palado_Markengeschichte_g0mlpa.png", alt: "Palado Markengeschichte", href: "https://paladoshoes.com/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/08_Festool_Brand_Store_c4cnz3.png", alt: "Festool Brand Store", href: "https://www.festool.de/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/05_IONIQ_A_Content_wobhk5.png", alt: "IONIQ A+ Content", href: "https://ioniqskin.com/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/09_Dr._Beckmann_Brand_Store_djyayg.png", alt: "Dr. Beckmann Brand Store", href: "https://www.dr-beckmann.com/de-de/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/02_MaHo_Galeriebilder_t2qlk9.png", alt: "MaHo Galeriebilder", href: "https://magicholz.de/" },
+  { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/04_Juno_me_A_Content_wgcuaj.png", alt: "juno&me A+ Content", href: "https://junoandme.de/" }
+];
+  if (!contentItems.length) return;
 
   const mod = (n, m) => ((n % m) + m) % m;
   let index = 0;
   let animating = false;
-  const DURATION = 520;     // ms
-  const SHIFT = '-33.333%'; // eine Slide
-
+  const DURATION = 520;
+  const SHIFT = '-33.333%';
   function cardHTML(item, { center = false } = {}) {
-    // Bild bei den Seiten-Karten entsättigen, Text bleibt normal
-    const imgCommon = "w-full h-56 object-cover rounded-xl";
-    const imgClass = center ? imgCommon : (imgCommon + " grayscale");
-    return `
-      <div class="p-5 md:p-6">
-        <img class="${imgClass}" src="${item.img}" alt="${item.name}" />
-        <h3 class="mt-4 font-semibold text-slate-900">${item.name}</h3>
-        <p class="text-sm text-slate-600">${item.role}</p>
-      </div>
-    `;
-  }
+  return `
+    <a href="${item.href}" target="_blank" rel="noopener"
+       class="block aspect-video relative rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-efly/50 cursor-pointer"
+       aria-label="${item.alt}">
+      <img src="${item.src}" alt="${item.alt}"
+           class="absolute inset-0 h-full w-full object-cover ${center ? '' : 'opacity-90 grayscale-[20%]'}">
+    </a>
+  `;
+}
+
 
   function render() {
-    const leftIndex  = mod(index - 1, teamMembers.length);
-    const rightIndex = mod(index + 1, teamMembers.length);
+    const leftIndex  = mod(index - 1, contentItems.length);
+    const rightIndex = mod(index + 1, contentItems.length);
 
-    leftContent.innerHTML   = cardHTML(teamMembers[leftIndex],  { center: false });
-    centerContent.innerHTML = cardHTML(teamMembers[index],      { center: true  });
-    rightContent.innerHTML  = cardHTML(teamMembers[rightIndex], { center: false });
+    leftContent.innerHTML   = cardHTML(contentItems[leftIndex],  { center: false });
+    centerContent.innerHTML = cardHTML(contentItems[index],      { center: true  });
+    rightContent.innerHTML  = cardHTML(contentItems[rightIndex], { center: false });
   }
 
   function slide(direction) {
@@ -734,9 +619,8 @@
     track.style.transform = `translateX(${direction === 'next' ? SHIFT : '33.333%'})`;
 
     setTimeout(() => {
-      index = mod(index + (direction === 'next' ? 1 : -1), teamMembers.length);
+      index = mod(index + (direction === 'next' ? 1 : -1), contentItems.length);
       render();
-
       track.style.transition = 'none';
       track.style.transform  = 'translateX(0)';
       track.getBoundingClientRect();
@@ -745,13 +629,45 @@
     }, DURATION);
   }
 
-  // Initial
   render();
-
-  // Interaktionen (nur Pfeile / Karten, KEIN globales Keyboard, damit es nicht mit dem Video kollidiert)
   [leftArrow, leftFrame].forEach(el => el && el.addEventListener('click', () => slide('prev')));
   [rightArrow, rightFrame].forEach(el => el && el.addEventListener('click', () => slide('next')));
+
+  // Optional: keyboard
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') slide('next');
+    if (e.key === 'ArrowLeft')  slide('prev');
+  });
 })();
+
+
+/* Simple vertical progress fill for #prozess */
+(function () {
+  const stage = document.getElementById('prozess-stage');
+  if (!stage) return;
+  const section = stage.closest('section');
+  const fill = stage.querySelector('.progress-fill');
+
+  function clamp(n, a, b){ return Math.min(Math.max(n, a), b); }
+
+  function update() {
+    const r = section.getBoundingClientRect();
+    const vh = window.innerHeight;
+
+    // progress: 0 when the section top hits bottom of viewport,
+    //           1 when the section bottom hits top of viewport.
+    const total = Math.max(r.height, 1);
+    const seen = clamp(vh - r.top, 0, total);   // how much is inside view
+    const progress = seen / total;
+
+    if (fill) fill.style.height = (progress * 100).toFixed(2) + '%';
+  }
+
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+})();
+
 
 
     </script>
