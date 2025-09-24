@@ -178,8 +178,8 @@
           <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6718ca9fbb70043f30e2e19c_15.png" alt="Ava&May" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
           <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6718ca9e331bfcadfc375e97_8a49847f17bd7015a5320d5a60373b4c_14.png" alt="Loewe" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
           <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6718ca9e0de0526629ec0d73_5.png" alt="Liebscher" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
-          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6718ca9fc5bda19c8549af01_4.png" alt="Weber" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
-          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6718ca9fc5bda19c8549af01_4.png" alt="Weber" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758700856/pick_em_Logo_mvfvvx.png" alt="pick'em" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758700856/kip_logo_de_rgb_qskinw.png" alt="kip" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
         </div>
       </div>
     </section>
@@ -408,7 +408,7 @@
     <footer id="kontakt" class="scroll-mt-24 py-8 border-t border-[#3b3b3b] bg-[#454545] text-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        <!-- Zeile 1: Copyright · Kontakt-Buttons · Social Links -->
+        <!--Copyright + Kontakt-Buttons + Social Links -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
           <div class="text-sm text-white/80">
             © <span id="y"></span> eFLY · Eine Leistung der eFLY
@@ -436,7 +436,7 @@
                  
         </div>
 
-        <!-- Zeile 2: Impressum als Dropdown, Datenschutz/AGB als Links -->
+        <!-- Impressum Dropdown, Datenschutz/AGB Links -->
         <div class="mt-6 flex flex-wrap items-center gap-6 text-sm">
           <button id="toggle-impressum"
         class="inline-flex items-center gap-2 text-white/80 hover:text-white"
@@ -449,14 +449,14 @@
             </svg>
           </button>
 
-          <!-- Externe/Platzhalter-Links -->
+          <!-- Externe Links -->
           <a href="https://www.efly-amz.com/datenschutz"class="text-white/80 hover:text-white" rel="noopener">Datenschutz</a>
           <a href="https://www.efly-amz.com/agb"class="text-white/80 hover:text-white" rel="noopener">AGB</a>
         </div>
       </div>
     </footer>
 
-    <!-- Ausklappbarer Impressum-Block (standardmäßig verborgen) -->
+    <!-- Ausklappbarer Impressum -->
     <section id="impressum" class="hidden py-16 bg-slate-50 border-t border-slate-200">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-semibold">Impressum</h2>
@@ -473,7 +473,7 @@
       </div>
     </section>
 
-    <!-- Lokale Datenschutz/AGB-Sektionen wurden entfernt und extern verlinkt -->
+    <!--Datenschutz/AGB verlinkt -->
     <section id="datenschutz" class="hidden py-16 bg-white border-t border-slate-200">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-semibold">Datenschutzerklärung</h2>
@@ -495,7 +495,6 @@
     </section>
 
     <script>
-      /* Mobiles Menü ein-/ausklappen (ARIA-Status pflegen) */
       const btn = document.getElementById('menu-btn');
       const menu = document.getElementById('mobile-menu');
       if (btn && menu) {
@@ -505,28 +504,26 @@
         });
       }
 
-      /* Jahreszahl im Footer automatisch setzen */
+      /* Jahreszahl */
       const yearEl = document.getElementById('y');
       if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-      /* Impressum-Dropdown steuern + Pfeil-Status (aria-expanded) setzen */
+      /* Impressum-Dropdown */
       const impBtn = document.getElementById('toggle-impressum');
       const impSec = document.getElementById('impressum');
       if (impBtn && impSec) {
         impBtn.addEventListener('click', () => {
-          const willOpen = impSec.classList.contains('hidden'); // Zustand vor dem Klick
-          impSec.classList.toggle('hidden');                    // Sichtbarkeit umschalten
+          const willOpen = impSec.classList.contains('hidden'); 
+          impSec.classList.toggle('hidden');        
           impBtn.setAttribute('aria-expanded', String(willOpen));
           if (willOpen) impSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
       }
 
-/* Video grid: play on hover, pause on leave */
-/* Video grid: play on hover, restore poster on leave */
 (function () {
   const vids = document.querySelectorAll('.hover-video');
 
-  // If a card scrolls out of view, stop it and restore the poster
+
   const io = ('IntersectionObserver' in window)
     ? new IntersectionObserver((entries) => {
         entries.forEach(e => {
@@ -534,8 +531,8 @@
           if (!e.isIntersecting) {
             try {
               v.pause();
-              v.currentTime = 0;   // reset to start
-              v.load();            // force "pre-play" state so the poster shows again
+              v.currentTime = 0; 
+              v.load();      
             } catch {}
           }
         });
@@ -544,8 +541,6 @@
 
   vids.forEach(v => {
     v.addEventListener('mouseenter', () => {
-      // ensure we’re not stuck in a loaded-but-paused frame
-      // (optional but helps some mobile browsers)
       if (v.readyState === 0) { try { v.load(); } catch {} }
       v.play().catch(()=>{});
     });
@@ -553,8 +548,8 @@
     v.addEventListener('mouseleave', () => {
       try {
         v.pause();
-        v.currentTime = 0; // go to start
-        v.load();          // show the poster again
+        v.currentTime = 0;
+        v.load();    
       } catch {}
     });
 
@@ -562,7 +557,7 @@
   });
 })();
 
-/* Content Beispiele Carousel (image cards, same shell as old video carousel) */
+/* Content Beispiele Carousel */
 (function () {
   const track        = document.getElementById('content-track');
   const leftFrame    = document.getElementById('content-left-frame');
@@ -575,7 +570,7 @@
   const rightArrow   = document.getElementById('content-right-arrow');
   if (!track || !leftFrame || !centerFrame || !rightFrame) return;
 
-  // Same images you used before (16:9)
+
   const contentItems = [
   { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/07_Ma%CC%88rklin_Markengeschichte_ufvqkz.png", alt: "Märklin Markengeschichte", href: "https://www.maerklinshop.de/" },
   { src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/01_STUR_Galeriebilder_m17hws.png", alt: "STUR Galeriebilder", href: "https://sturcookware.de/" },
@@ -637,7 +632,7 @@
   [leftArrow, leftFrame].forEach(el => el && el.addEventListener('click', () => slide('prev')));
   [rightArrow, rightFrame].forEach(el => el && el.addEventListener('click', () => slide('next')));
 
-  // Optional: keyboard
+
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowRight') slide('next');
     if (e.key === 'ArrowLeft')  slide('prev');
@@ -645,7 +640,6 @@
 })();
 
 
-/* Simple vertical progress fill for #prozess */
 (function () {
   const stage = document.getElementById('prozess-stage');
   if (!stage) return;
@@ -657,11 +651,8 @@
   function update() {
     const r = section.getBoundingClientRect();
     const vh = window.innerHeight;
-
-    // progress: 0 when the section top hits bottom of viewport,
-    //           1 when the section bottom hits top of viewport.
     const total = Math.max(r.height, 1);
-    const seen = clamp(vh - r.top, 0, total);   // how much is inside view
+    const seen = clamp(vh - r.top, 0, total);
     const progress = seen / total;
 
     if (fill) fill.style.height = (progress * 100).toFixed(2) + '%';
