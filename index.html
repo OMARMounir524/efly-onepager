@@ -10,6 +10,108 @@
       /* Pfeil-Icon am Impressum-Button animieren (dreht sich beim Öffnen 180°) */
       #toggle-impressum .chev { transition: transform 200ms ease; }
       #toggle-impressum[aria-expanded="true"] .chev { transform: rotate(180deg); }
+
+
+/* Prozess — remove any stray helper lines near cards */
+#prozess .stepcard::before,
+#prozess .stepcard::after { content: none !important; }
+
+/* Planes + gaps (cut the line) */
+.prozess-plane {
+  position: absolute;
+  left: 50%; transform: translate(-50%,-50%);
+  width: 26px; height: 26px;
+  pointer-events: none; /* decorative */
+}
+
+.prozess-gap {
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  width: 6px; height: 18px;         /* small gap above/below plane */
+  background: #fff; border-radius: 9999px;
+  /* sits above both rails so it cuts grey + orange */
+  z-index: 2;
+}
+
+/* Make sure layers sit correctly */
+#prozess-stage .prozess-rail   { z-index: 0; }
+#prozess-stage .prozess-fill   { z-index: 1; }
+#prozess-gaps-layer            { z-index: 3; }
+#prozess-planes-layer          { z-index: 4; }
+
+
+
+/* --- Alternating timeline (EFly style) --- */
+.timeline {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Center rail */
+.timeline .rail,
+.timeline .rail-fill {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%; transform: translateX(-50%);
+  width: 4px; border-radius: 999px;
+}
+.timeline .rail      { background: #e5e7eb; }            /* gray-200 */
+.timeline .rail-fill { background: #f07b16; height: 0; } /* efly orange */
+
+/* Steps grid: 3 cols (left | rail gap | right) */
+.timeline ol { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 32px 0; }
+
+/* each row creates space and gives a positioning context */
+.timeline li { position: relative; min-height: 240px; display: contents; }
+
+/* card shells */
+.step-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.06);
+  padding: 20px 22px;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.step-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,.08); }
+
+.step-meta { font-size: .85rem; font-weight: 600; color: #f07b16; }
+.step-title { margin-top: 4px; font-weight: 700; color: #0f172a; } /* slate-900 */
+
+/* Place cards either left or right */
+.timeline .left  { grid-column: 1 / 2; align-self: center; margin-right: 30px; }
+.timeline .right { grid-column: 3 / 4; align-self: center; margin-left: 30px; }
+
+/* Connectors from card edge to rail */
+.timeline .left::after,
+.timeline .right::after{
+  content:"";
+  position: absolute; top: 50%; width: 36px; height: 2px; background:#e5e7eb;
+}
+.timeline .left::after  { right: -36px; }
+.timeline .right::after { left: -36px; }
+
+/* Plane that cuts the rail (one per step) */
+.plane {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px; height: 28px;
+  background: url("https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/667d218493143fe75d35f397_Group%204612.svg") center/contain no-repeat;
+  z-index: 2;
+}
+
+/* mobile/tablet: stack vertically and simplify */
+@media (max-width: 768px){
+  .timeline ol { grid-template-columns: 1fr; }
+  .timeline .rail, .timeline .rail-fill { left: 22px; transform:none; width: 3px; }
+  .timeline li { min-height: auto; display: block; padding-left: 44px; }
+  .timeline .left, .timeline .right { grid-column: 1; margin: 0 0 20px 0; }
+  .timeline .left::after, .timeline .right::after { display:none; }
+  .plane { left: 22px; transform: translate(-50%, -50%); }
+}
+
+
     </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,9 +140,58 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-      /* Sanftes Scrollen bei Anker-Links und kleines „DRAFT“-Badge fixieren */
-      html { scroll-behavior: smooth; }
-      .draft-badge { position: fixed; top: 12px; left: 12px; z-index: 50; }
+
+
+/* Amazon Video Ads: diagonal ribbon layer (single source of truth) */
+#videos { position: relative; overflow: hidden; }
+
+#videos .ribbon-bg {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120vw;
+  height: clamp(420px, 55vw, 720px);
+
+  /* put the band inside the section so the top diagonal is visible */
+  top: 2rem;
+
+  background-image: url('https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/65358ee597cd72e210aff997_primary-color-project-bg-p-3200.webp');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  /* diagonals INSIDE the visible box */
+  clip-path: polygon(0 0, 100% 8%, 100% 92%, 0 100%);
+
+  z-index: 0;
+  pointer-events: none;
+}
+
+#videos .videos-inner {
+  position: relative;
+  z-index: 1; /* content above the ribbon */
+}
+
+
+/* Ensure the content sits above the ribbon layer */
+#videos .videos-inner {
+  position: relative;
+  z-index: 1;
+}
+
+
+
+/* Sanftes Scrollen bei Anker-Links und kleines „DRAFT“-Badge fixieren */
+html { scroll-behavior: smooth; }
+.draft-badge { position: fixed; top: 12px; left: 12px; z-index: 50; }
+
+@media (max-width: 768px){
+  .video-ribbon::before{
+    clip-path: polygon(0 10%, 100% 4%, 100% 90%, 0 96%);
+    inset:-4rem 0 -4rem 0;
+  }
+}
+
     
 /* ---- Process (Ablauf) scroll-driven reveal ---- */
 .process-pin { position: sticky; top: 18vh; } /* keeps the grid in view while scrolling */
@@ -164,7 +315,7 @@
     </section>
 
     <!-- Logo-Wall (reine Darstellung, Platzhalter) -->
-    <section id="logos" class="py-20 sm:py-28 border-t border-slate-200 bg-white">
+    <section id="logos" class="py-20 sm:py-28 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Diese Marken vertrauen auf eFLY</h2>
         <div class="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center">
@@ -178,14 +329,18 @@
           <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6718ca9fbb70043f30e2e19c_15.png" alt="Ava&May" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
           <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6718ca9e331bfcadfc375e97_8a49847f17bd7015a5320d5a60373b4c_14.png" alt="Loewe" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
           <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6718ca9e0de0526629ec0d73_5.png" alt="Liebscher" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758700856/pick_em_Logo_mvfvvx.png" alt="pick'em" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
-          <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1758700856/kip_logo_de_rgb_qskinw.png" alt="kip" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/68d3a40b0b13386bba17d466_28.png" alt="pick'em" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
+          <img src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/68d3a40bb1127fba343b9391_27.png" alt="kip" class="h-16 w-full object-contain opacity-70 saturate-0 transition hover:opacity-100 hover:saturate-100"/>
         </div>
       </div>
     </section>
-
-    <section id="videos" class="pt-20 sm:pt-28 pb-28 sm:pb-36 bg-gradient-to-b from-white to-efly/[0.04] border-t border-slate-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="videos" class="pt-20 sm:pt-28 pb-28 sm:pb-36">
+      <!-- orange diagonal ribbon layer -->
+      <div class="ribbon-bg" aria-hidden="true"></div>
+    
+      <!-- keep your container, just add a marker class so it stacks above -->
+      <div class="videos-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     
         <div class="flex items-end justify-between gap-4">
           <div>
             <h2 class="text-2xl sm:text-3xl font-semibold">Amazon Video Ads</h2>
@@ -253,7 +408,7 @@
     
 
 <!-- Content Beispiele (Carousel, same shell as the old video carousel) -->
-<section id="bilder" class="pt-20 sm:pt-28 pb-28 sm:pb-36 bg-slate-50 border-t border-slate-200">
+<section id="bilder" class="pt-20 sm:pt-28 pb-28 sm:pb-36 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-end justify-between gap-4">
       <div>
@@ -312,47 +467,76 @@
 </section>
 
 
- <!-- Prozess (vertical list + scroll progress bar) -->
-<section id="prozess" class="py-20 sm:py-28 bg-white border-t border-slate-200">
+ <!-- Prozess (alternating cards + center rail with step planes and gaps) -->
+<section id="prozess" class="py-20 sm:py-28 bg-white">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
     <h2 class="text-2xl sm:text-3xl font-semibold">Ablauf der Zusammenarbeit</h2>
 
-    <div id="prozess-stage" class="relative mt-10">
-      <!-- vertical progress rail (left) -->
-      <div class="absolute left-2 sm:left-4 top-0 bottom-0 w-1 bg-slate-200 rounded-full"></div>
-      <div class="progress-fill absolute left-2 sm:left-4 top-0 w-1 bg-efly rounded-full" style="height:0;"></div>
+    <div id="prozess-stage" class="relative mt-12">
+      <!-- Center rail (behind everything) -->
+      <div class="prozess-rail absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-slate-200 rounded-full"></div>
+      <!-- Orange fill (scroll progress) -->
+      <div class="prozess-fill absolute left-1/2 -translate-x-1/2 top-0 w-0.5 bg-efly rounded-full" style="height:0;"></div>
 
-      <!-- steps stack -->
-      <ol class="ml-8 sm:ml-12 space-y-6">
-        <!-- Step 1 -->
-        <li class="stepcard">
-          <div class="rounded-xl bg-white border border-slate-200 shadow-soft p-5">
-            <div class="text-sm font-semibold text-efly">Schritt 1</div>
-            <h3 class="mt-1 font-semibold text-slate-900">Gemeinsame definierung der KPIs</h3>
+      <!-- Gaps & planes get injected here by JS (two overlay layers) -->
+      <div id="prozess-gaps-layer" class="pointer-events-none absolute inset-0"></div>
+      <div id="prozess-planes-layer" class="pointer-events-none absolute inset-0"></div>
+
+      <!-- Steps (alternate left/right) -->
+      <ol class="space-y-24">
+        <!-- Step 1 (left) -->
+        <li class="stepcard relative">
+          <div class="grid grid-cols-12 items-center">
+            <div class="col-span-12 lg:col-span-6 lg:pr-12">
+              <div class="rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
+                <div class="text-sm font-semibold text-efly">Schritt 1</div>
+                <h3 class="mt-1 font-semibold text-slate-900">Gemeinsame definierung der KPIs</h3>
+                <p class="mt-2 text-slate-600 text-sm">Kurzbeschreibung des ersten Schritts. (Dein Text bleibt hier.)</p>
+              </div>
+            </div>
+            <div class="hidden lg:block lg:col-span-6"></div>
           </div>
         </li>
 
-        <!-- Step 2 -->
-        <li class="stepcard">
-          <div class="rounded-xl bg-white border border-slate-200 shadow-soft p-5">
-            <div class="text-sm font-semibold text-efly">Schritt 2</div>
-            <h3 class="mt-1 font-semibold text-slate-900">Produkt Schulung</h3>
+        <!-- Step 2 (right) -->
+        <li class="stepcard relative">
+          <div class="grid grid-cols-12 items-center">
+            <div class="hidden lg:block lg:col-span-6"></div>
+            <div class="col-span-12 lg:col-span-6 lg:pl-12">
+              <div class="rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
+                <div class="text-sm font-semibold text-efly">Schritt 2</div>
+                <h3 class="mt-1 font-semibold text-slate-900">Produkt Schulung</h3>
+                <p class="mt-2 text-slate-600 text-sm">…</p>
+              </div>
+            </div>
           </div>
         </li>
 
-        <!-- Step 3 -->
-        <li class="stepcard">
-          <div class="rounded-xl bg-white border border-slate-200 shadow-soft p-5">
-            <div class="text-sm font-semibold text-efly">Schritt 3</div>
-            <h3 class="mt-1 font-semibold text-slate-900">Weekly Call</h3>
+        <!-- Step 3 (left) -->
+        <li class="stepcard relative">
+          <div class="grid grid-cols-12 items-center">
+            <div class="col-span-12 lg:col-span-6 lg:pr-12">
+              <div class="rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
+                <div class="text-sm font-semibold text-efly">Schritt 3</div>
+                <h3 class="mt-1 font-semibold text-slate-900">Weekly Call</h3>
+                <p class="mt-2 text-slate-600 text-sm">…</p>
+              </div>
+            </div>
+            <div class="hidden lg:block lg:col-span-6"></div>
           </div>
         </li>
 
-        <!-- Step 4 -->
-        <li class="stepcard">
-          <div class="rounded-xl bg-white border border-slate-200 shadow-soft p-5">
-            <div class="text-sm font-semibold text-efly">Schritt 4</div>
-            <h3 class="mt-1 font-semibold text-slate-900">Gemeinsame Ziele ereichen</h3>
+        <!-- Step 4 (right) -->
+        <li class="stepcard relative">
+          <div class="grid grid-cols-12 items-center">
+            <div class="hidden lg:block lg:col-span-6"></div>
+            <div class="col-span-12 lg:col-span-6 lg:pl-12">
+              <div class="rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
+                <div class="text-sm font-semibold text-efly">Schritt 4</div>
+                <h3 class="mt-1 font-semibold text-slate-900">Gemeinsame Ziele erreichen</h3>
+                <p class="mt-2 text-slate-600 text-sm">…</p>
+              </div>
+            </div>
           </div>
         </li>
       </ol>
@@ -360,10 +544,11 @@
   </div>
 </section>
 
+
     
 
-<!-- Team -->
-<section id="team" class="py-20 sm:py-28 bg-gradient-to-b from-white to-efly/[0.04] border-t border-slate-200">
+<!-- Team (click a card to view contact) -->
+<section id="team" class="py-20 sm:py-28 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-end justify-between gap-4">
       <div>
@@ -374,33 +559,92 @@
 
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-      <div class="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg">
+      <!-- Adrian -->
+      <button
+        class="team-card rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-efly/50"
+        data-name="Adrian Aubele"
+        data-role="Prokurist"
+        data-email="adrian.aubele@efly-amz.com"
+        data-phone="tele? "
+        data-img="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f702180be25a62e77e3c_Adi.png"
+        aria-label="Kontakt von Adrian Aubele anzeigen">
         <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f702180be25a62e77e3c_Adi.png"
              alt="Adrian Aubele"
              class="mx-auto h-56 w-56 object-cover rounded-full" />
         <h3 class="mt-6 font-semibold text-slate-900">Adrian Aubele</h3>
         <p class="text-sm text-slate-600">Prokurist</p>
-      </div>
+        <p class="mt-3 text-xs text-slate-500">Klicken für Kontakt</p>
+      </button>
 
-
-      <div class="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg">
+      <!-- Moritz -->
+      <button
+        class="team-card rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-efly/50"
+        data-name="Moritz Heller"
+        data-role="Geschäftsführung"
+        data-email="moritz.heller@efly-amz.com"
+        data-phone=" tele? "
+        data-img="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f63627a7ba28632f9a55_Moritz.png"
+        aria-label="Kontakt von Moritz Heller anzeigen">
         <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f63627a7ba28632f9a55_Moritz.png"
              alt="Moritz Heller"
              class="mx-auto h-56 w-56 object-cover rounded-full" />
         <h3 class="mt-6 font-semibold text-slate-900">Moritz Heller</h3>
         <p class="text-sm text-slate-600">Geschäftsführung</p>
-      </div>
+        <p class="mt-3 text-xs text-slate-500">Klicken für Kontakt</p>
+      </button>
 
-      <div class="rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg">
+      <!-- Jonas -->
+      <button
+        class="team-card rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-efly/50"
+        data-name="Jonas Lamneck"
+        data-role="Co-Geschäftsführung"
+        data-email="jonas.lamneck@efly-amz.com"
+        data-phone=" tele? "
+        data-img="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f6544cd0d77b0c433510_Jonas.png"
+        aria-label="Kontakt von Jonas Lamneck anzeigen">
         <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f6544cd0d77b0c433510_Jonas.png"
              alt="Jonas Lamneck"
              class="mx-auto h-56 w-56 object-cover rounded-full" />
         <h3 class="mt-6 font-semibold text-slate-900">Jonas Lamneck</h3>
         <p class="text-sm text-slate-600">Co-Geschäftsführung</p>
+        <p class="mt-3 text-xs text-slate-500">Klicken für Kontakt</p>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="team-modal" class="fixed inset-0 z-50 hidden">
+    <!-- backdrop -->
+    <div class="absolute inset-0 bg-black/40" data-close></div>
+
+    <!-- dialog -->
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-slate-200 overflow-hidden">
+        <div class="flex items-center gap-4 p-6 border-b border-slate-200">
+          <img id="tm-img" src="" alt="" class="h-16 w-16 rounded-full object-cover ring-2 ring-efly/30" />
+          <div>
+            <h3 id="tm-name" class="font-semibold text-slate-900"></h3>
+            <p id="tm-role" class="text-sm text-slate-600"></p>
+          </div>
+          <button class="ml-auto inline-flex items-center justify-center rounded-lg border border-slate-300 px-3 py-1.5 text-sm hover:bg-slate-50"
+                  data-close aria-label="Schließen">Schließen</button>
+        </div>
+        <div class="p-6 space-y-3 text-sm">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-envelope text-slate-500 w-5 text-center"></i>
+            <a id="tm-email" href="#" class="text-efly hover:underline">email@example.com</a>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-phone text-slate-500 w-5 text-center"></i>
+            <a id="tm-phone" href="#" class="text-slate-700 hover:underline">+49 (0)000 0000000</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 
 
     <!-- Footer mit Kontakt, Socials und Impressum-Dropdown -->
@@ -414,7 +658,7 @@
           </div>
 
           <div class="flex flex-wrap gap-3 md:justify-center">
-            <a href="mailto:kontakt@efly-amz.com?subject=Anfrage%20One-Pager" class="inline-flex items-center rounded-xl bg-efly hover:opacity-90 text-white px-4 py-2 text-sm font-medium shadow-soft">E-Mail: kontakt@efly-amz.com</a>
+            <a href="mailto:kontakt@efly-amz.com" class="inline-flex items-center rounded-xl bg-efly hover:opacity-90 text-white px-4 py-2 text-sm font-medium shadow-soft">E-Mail: kontakt@efly-amz.com</a>
             <a href="tel:+4971150426681" class="inline-flex items-center rounded-xl bg-efly hover:opacity-90 text-white px-4 py-2 text-sm font-medium shadow-soft">Telefon: +49 (0)711 50426681</a>
           </div>
 
@@ -662,6 +906,150 @@
   window.addEventListener('resize', update);
 })();
 
+/* Team modal */
+(function () {
+  const modal = document.getElementById('team-modal');
+  if (!modal) return;
+
+  const nameEl  = modal.querySelector('#tm-name');
+  const roleEl  = modal.querySelector('#tm-role');
+  const imgEl   = modal.querySelector('#tm-img');
+  const emailEl = modal.querySelector('#tm-email');
+  const phoneEl = modal.querySelector('#tm-phone');
+
+  function open(card){
+    const name  = card.dataset.name || '';
+    const role  = card.dataset.role || '';
+    const img   = card.dataset.img || '';
+    const email = card.dataset.email || '';
+    const phone = card.dataset.phone || '';
+
+    nameEl.textContent = name;
+    roleEl.textContent = role;
+    imgEl.src = img;
+    imgEl.alt = name;
+
+    // Set hrefs (mailto/tel) + visible text
+    emailEl.textContent = email || '–';
+    emailEl.href = email ? `mailto:${email}` : '#';
+    phoneEl.textContent = phone || '–';
+    phoneEl.href = phone ? `tel:${phone.replace(/\s+/g,'')}` : '#';
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close(){
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  // Card clicks
+  document.querySelectorAll('.team-card').forEach(card=>{
+    card.addEventListener('click', () => open(card));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(card); }
+    });
+  });
+
+  // Close handlers
+  modal.querySelectorAll('[data-close]').forEach(el=>{
+    el.addEventListener('click', close);
+  });
+  document.addEventListener('keydown', (e)=>{
+    if (!modal.classList.contains('hidden') && e.key === 'Escape') close();
+  });
+})();
+
+
+
+// Timeline rail fill on scroll
+(function () {
+  const tl = document.getElementById('timeline');
+  const fill = document.getElementById('railFill');
+  if (!tl || !fill) return;
+
+  function clamp(n, a, b) { return Math.min(Math.max(n, a), b); }
+
+  function update() {
+    const r = tl.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // progress from when the top hits viewport to when the bottom leaves
+    const total = r.height + vh; // span to fill 0..100%
+    const seen  = clamp(vh - r.top, 0, total);
+    const p = seen / total;
+    fill.style.height = (p * 100).toFixed(2) + '%';
+  }
+
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+})();
+
+
+(function () {
+  const stage   = document.getElementById('prozess-stage');
+  if (!stage) return;
+
+  const section = stage.closest('section');
+  const rail    = stage.querySelector('.prozess-rail');
+  const fill    = stage.querySelector('.prozess-fill');
+  const gapsLay = stage.querySelector('#prozess-gaps-layer');
+  const planesLay = stage.querySelector('#prozess-planes-layer');
+
+  const PLANE_SRC = "https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/667d218493143fe75d35f397_Group%204612.svg";
+
+  function clamp(n, a, b){ return Math.min(Math.max(n, a), b); }
+
+  function updateFill() {
+    const r = section.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const total = Math.max(r.height, 1);
+    const seen = clamp(vh - r.top, 0, total);
+    const progress = seen / total;
+    if (fill) fill.style.height = (progress * 100).toFixed(2) + '%';
+  }
+
+  function updateMarkers() {
+    // clear old
+    gapsLay.innerHTML = '';
+    planesLay.innerHTML = '';
+
+    const steps = Array.from(stage.querySelectorAll('li.stepcard'));
+    const stageRect = stage.getBoundingClientRect();
+
+    steps.forEach(li => {
+      const rect = li.getBoundingClientRect();
+      const centerY = (rect.top - stageRect.top) + rect.height / 2;
+
+      // Gap (cuts both rails visually)
+      const gap = document.createElement('div');
+      gap.className = 'prozess-gap';
+      gap.style.top = `${centerY}px`;
+      gapsLay.appendChild(gap);
+
+      // Plane image
+      const img = document.createElement('img');
+      img.className = 'prozess-plane';
+      img.src = PLANE_SRC;
+      img.alt = '';
+      img.decoding = 'async';
+      img.loading = 'lazy';
+      img.style.top = `${centerY}px`;
+      planesLay.appendChild(img);
+    });
+  }
+
+  // init
+  updateFill();
+  updateMarkers();
+
+  window.addEventListener('scroll', updateFill, { passive: true });
+  window.addEventListener('resize', () => { updateFill(); updateMarkers(); });
+
+  // in case fonts/content reflow after load
+  window.addEventListener('load', () => { updateFill(); updateMarkers(); });
+})();
 
 
     </script>
