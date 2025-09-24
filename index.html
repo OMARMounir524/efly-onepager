@@ -597,7 +597,6 @@
         data-name="Adrian Aubele"
         data-role="Prokurist"
         data-email="adrian.aubele@efly-amz.com"
-        data-phone="tele? "
         data-img="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f702180be25a62e77e3c_Adi.png"
         aria-label="Kontakt von Adrian Aubele anzeigen">
         <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f702180be25a62e77e3c_Adi.png"
@@ -613,7 +612,6 @@
         data-name="Moritz Heller"
         data-role="Geschäftsführung"
         data-email="moritz.heller@efly-amz.com"
-        data-phone=" tele? "
         data-img="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f63627a7ba28632f9a55_Moritz.png"
         aria-label="Kontakt von Moritz Heller anzeigen">
         <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f63627a7ba28632f9a55_Moritz.png"
@@ -629,7 +627,6 @@
         data-name="Jonas Lamneck"
         data-role="Co-Geschäftsführung"
         data-email="jonas.lamneck@efly-amz.com"
-        data-phone=" tele? "
         data-img="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f6544cd0d77b0c433510_Jonas.png"
         aria-label="Kontakt von Jonas Lamneck anzeigen">
         <img src="https://cdn.prod.website-files.com/651e9b7ad3f55464374d3cbf/6825f6544cd0d77b0c433510_Jonas.png"
@@ -661,11 +658,7 @@
         <div class="p-6 space-y-3 text-sm">
           <div class="flex items-center gap-3">
             <i class="fa-solid fa-envelope text-slate-500 w-5 text-center"></i>
-            <a id="tm-email" href="#" class="text-efly hover:underline">email@example.com</a>
-          </div>
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-phone text-slate-500 w-5 text-center"></i>
-            <a id="tm-phone" href="#" class="text-slate-700 hover:underline">+49 (0)000 0000000</a>
+            <a id="tm-email" href="#" class="text-efly hover:underline">kontakt@efly-amz.com</a>
           </div>
         </div>
       </div>
@@ -1003,11 +996,9 @@
     imgEl.src = img;
     imgEl.alt = name;
 
-    // Set hrefs (mailto/tel)
+    // Set hrefs (mailto)
     emailEl.textContent = email || '–';
     emailEl.href = email ? `mailto:${email}` : '#';
-    phoneEl.textContent = phone || '–';
-    phoneEl.href = phone ? `tel:${phone.replace(/\s+/g,'')}` : '#';
 
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
