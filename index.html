@@ -7,33 +7,50 @@
     <meta name="description" content="Draft-Onepager für Referenzen (Logos, Bilder, Videos), Team, Prozess und Kontakt. Eine Marke der eFLY." />
 
     <style>
-      /* Pfeil-Icon am Impressum-Button animieren (dreht sich beim Öffnen 180°) */
+      /* Pfeil-Icon am Impressum-Button animieren */
       #toggle-impressum .chev { transition: transform 200ms ease; }
       #toggle-impressum[aria-expanded="true"] .chev { transform: rotate(180deg); }
 
 
-/* Prozess — remove any stray helper lines near cards */
+#impressum { background:#454545; border-top: none; }
+#impressum h2 { color:#fff; }
+#impressum p,
+#impressum a,
+#impressum strong,
+#impressum li { color: rgba(255,255,255,0.9); }
+
+#impressum a {
+  color: #f07b16;
+  text-decoration: none;
+}
+#impressum a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+
+
 #prozess .stepcard::before,
 #prozess .stepcard::after { content: none !important; }
 
-/* Planes + gaps (cut the line) */
+#prozess-stage { --plane-y-offset: 0px; }
+
 .prozess-plane {
   position: absolute;
-  left: 50%; transform: translate(-50%,-50%);
+  left: 50%;
+  transform: translate(-50%, calc(-50% + var(--plane-y-offset, 0px)));
   width: 26px; height: 26px;
-  pointer-events: none; /* decorative */
+  pointer-events: none;
 }
 
 .prozess-gap {
   position: absolute;
-  left: 50%; transform: translateX(-50%);
-  width: 6px; height: 18px;         /* small gap above/below plane */
-  background: #fff; border-radius: 9999px;
-  /* sits above both rails so it cuts grey + orange */
-  z-index: 2;
+  left: 50%; transform: translate(-50%, -50%);
+  width: 10px;      
+  height: 30px;     
+  background: #fff; 
+  border-radius: 9999px;
+  z-index: 2;      
 }
 
-/* Make sure layers sit correctly */
+
 #prozess-stage .prozess-rail   { z-index: 0; }
 #prozess-stage .prozess-fill   { z-index: 1; }
 #prozess-gaps-layer            { z-index: 3; }
@@ -41,7 +58,7 @@
 
 
 
-/* --- Alternating timeline (EFly style) --- */
+/* --- Alternating timeline --- */
 .timeline {
   position: relative;
   max-width: 1100px;
@@ -59,10 +76,8 @@
 .timeline .rail      { background: #e5e7eb; }            /* gray-200 */
 .timeline .rail-fill { background: #f07b16; height: 0; } /* efly orange */
 
-/* Steps grid: 3 cols (left | rail gap | right) */
 .timeline ol { display: grid; grid-template-columns: 1fr 60px 1fr; gap: 32px 0; }
 
-/* each row creates space and gives a positioning context */
 .timeline li { position: relative; min-height: 240px; display: contents; }
 
 /* card shells */
@@ -77,13 +92,11 @@
 .step-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,.08); }
 
 .step-meta { font-size: .85rem; font-weight: 600; color: #f07b16; }
-.step-title { margin-top: 4px; font-weight: 700; color: #0f172a; } /* slate-900 */
+.step-title { margin-top: 4px; font-weight: 700; color: #0f172a; }
 
-/* Place cards either left or right */
 .timeline .left  { grid-column: 1 / 2; align-self: center; margin-right: 30px; }
 .timeline .right { grid-column: 3 / 4; align-self: center; margin-left: 30px; }
 
-/* Connectors from card edge to rail */
 .timeline .left::after,
 .timeline .right::after{
   content:"";
@@ -92,7 +105,6 @@
 .timeline .left::after  { right: -36px; }
 .timeline .right::after { left: -36px; }
 
-/* Plane that cuts the rail (one per step) */
 .plane {
   position: absolute; left: 50%; top: 50%;
   transform: translate(-50%, -50%);
@@ -136,13 +148,13 @@
     </script>
     
 
-    <!-- Icons (Font Awesome) -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
 
 
-/* Amazon Video Ads: diagonal ribbon layer (single source of truth) */
+/* Amazon Video Ads: diagonal ribbon layer */
 #videos { position: relative; overflow: hidden; }
 
 #videos .ribbon-bg {
@@ -152,7 +164,6 @@
   width: 120vw;
   height: clamp(420px, 55vw, 720px);
 
-  /* put the band inside the section so the top diagonal is visible */
   top: 2rem;
 
   background-image: url('https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/65358ee597cd72e210aff997_primary-color-project-bg-p-3200.webp');
@@ -160,7 +171,6 @@
   background-size: cover;
   background-position: center;
 
-  /* diagonals INSIDE the visible box */
   clip-path: polygon(0 0, 100% 8%, 100% 92%, 0 100%);
 
   z-index: 0;
@@ -169,21 +179,14 @@
 
 #videos .videos-inner {
   position: relative;
-  z-index: 1; /* content above the ribbon */
+  z-index: 1;
 }
 
-
-/* Ensure the content sits above the ribbon layer */
 #videos .videos-inner {
   position: relative;
   z-index: 1;
 }
 
-
-
-/* Sanftes Scrollen bei Anker-Links und kleines „DRAFT“-Badge fixieren */
-html { scroll-behavior: smooth; }
-.draft-badge { position: fixed; top: 12px; left: 12px; z-index: 50; }
 
 @media (max-width: 768px){
   .video-ribbon::before{
@@ -194,10 +197,10 @@ html { scroll-behavior: smooth; }
 
     
 /* ---- Process (Ablauf) scroll-driven reveal ---- */
-.process-pin { position: sticky; top: 18vh; } /* keeps the grid in view while scrolling */
+.process-pin { position: sticky; top: 18vh; } 
 @media (max-width: 1023px) { .process-pin { top: 10vh; } }
 
-.process-stage { --p: 0; } /* progress [0..1] set from JS */
+.process-stage { --p: 0; }
 
 .process-rail { position: relative; }
 .process-rail .rail,
@@ -211,14 +214,21 @@ html { scroll-behavior: smooth; }
   .process-rail .rail, .process-rail .rail-fill { display: none; }
 }
 
-/* Step cards: hidden by default, reveal smoothly */
-.stepcard { 
-  opacity: 0; transform: translateY(14px) scale(.98);
+#prozess .stepcard { 
+  opacity: 1; transform: none;
   transition: opacity .35s ease, transform .35s ease, box-shadow .25s ease;
   will-change: opacity, transform;
 }
 .stepcard.is-visible { opacity: 1; transform: translateY(0) scale(1); }
-.stepcard:hover { box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+#prozess .stepcard:hover { box-shadow: none !important; transform: none !important; }
+
+#prozess .step-box {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+#prozess .step-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.10);
+}
 
     </style>    
   </head>
@@ -229,8 +239,6 @@ html { scroll-behavior: smooth; }
     <header class="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-200">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          <!-- Logo/Anker zurück zum Hero -->
-          <!-- Logo + Titel (Link zum Hero) -->
 <a href="#hero" class="flex items-center gap-3 font-semibold">
   <img
     src="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/6534fa896047abfdf86b1f22_header-logo-p-500.png"
@@ -273,7 +281,7 @@ html { scroll-behavior: smooth; }
       </div>
     </header>
 
-    <!-- Hero-Bereich mit Text links und Autoplay-Video rechts -->
+    <!-- Hero-Bereich -->
     <section id="hero" class="relative overflow-hidden">
       <div class="absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-white"></div>
 
@@ -298,7 +306,7 @@ html { scroll-behavior: smooth; }
             </div>            
           </div>
 
-          <!-- Hero-Video (autoplay, stumm, Loop) -->
+          <!-- Hero-Video -->
           <div class="relative">
             <div class="rounded-2xl overflow-hidden shadow-soft border border-slate-200">
               <video
@@ -314,7 +322,7 @@ html { scroll-behavior: smooth; }
       </div>
     </section>
 
-    <!-- Logo-Wall (reine Darstellung, Platzhalter) -->
+    <!-- Logo-Wall -->
     <section id="logos" class="py-20 sm:py-28 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-3xl sm:text-4xl font-bold tracking-tight">Diese Marken vertrauen auf eFLY</h2>
@@ -335,10 +343,8 @@ html { scroll-behavior: smooth; }
       </div>
     </section>
     <section id="videos" class="pt-20 sm:pt-28 pb-28 sm:pb-36">
-      <!-- orange diagonal ribbon layer -->
       <div class="ribbon-bg" aria-hidden="true"></div>
     
-      <!-- keep your container, just add a marker class so it stacks above -->
       <div class="videos-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
      
         <div class="flex items-end justify-between gap-4">
@@ -347,10 +353,9 @@ html { scroll-behavior: smooth; }
           </div>
         </div>
     
-        <!-- 3-per-row grid -->
         <div id="video-grid" class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
     
-          <!-- One card = poster + video that plays on hover -->
+          <!-- poster + video; hover = play -->
           <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
             <div class="aspect-video relative">
               <video class="hover-video absolute inset-0 h-full w-full object-cover"
@@ -400,14 +405,12 @@ html { scroll-behavior: smooth; }
               </video>
             </div>
           </article>
-    
-          <!-- Add more cards if you add more videos -->
-        </div>
+            </div>
       </div>
     </section>
     
 
-<!-- Content Beispiele (Carousel, same shell as the old video carousel) -->
+<!-- Content Beispiele Carousel -->
 <section id="bilder" class="pt-20 sm:pt-28 pb-28 sm:pb-36 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-end justify-between gap-4">
@@ -420,7 +423,6 @@ html { scroll-behavior: smooth; }
       <div id="content-viewport" class="overflow-x-hidden overflow-y-visible py-4">
         <div id="content-track" class="flex will-change-transform transition-transform duration-300 ease-out">
 
-          <!-- LEFT card (dimmed + arrow) -->
           <div class="basis-1/3 px-2 flex items-center min-w-0">
             <div id="content-left-frame"
             class="w-full relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">             
@@ -435,7 +437,6 @@ html { scroll-behavior: smooth; }
             </div>
           </div>
 
-          <!-- CENTER card (highlighted) -->
           <div class="basis-1/2 px-2 flex items-center min-w-0">
             <div class="w-full rounded-2xl p-[2px] bg-gradient-to-r from-efly/70 to-efly/40">
               <div id="content-center-frame" class="w-full relative rounded-xl overflow-hidden border border-white/60 shadow-soft transition">
@@ -444,7 +445,6 @@ html { scroll-behavior: smooth; }
             </div>
           </div>          
 
-          <!-- RIGHT card (dimmed + arrow) -->
           <div class="basis-1/3 px-2 flex items-center min-w-0">
             <div id="content-right-frame"
             class="w-full relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">       
@@ -467,74 +467,65 @@ html { scroll-behavior: smooth; }
 </section>
 
 
- <!-- Prozess (alternating cards + center rail with step planes and gaps) -->
+ <!-- Prozess -->
 <section id="prozess" class="py-20 sm:py-28 bg-white">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
     <h2 class="text-2xl sm:text-3xl font-semibold">Ablauf der Zusammenarbeit</h2>
 
     <div id="prozess-stage" class="relative mt-12">
-      <!-- Center rail (behind everything) -->
+      <!-- Center rail -->
       <div class="prozess-rail absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-slate-200 rounded-full"></div>
       <!-- Orange fill (scroll progress) -->
       <div class="prozess-fill absolute left-1/2 -translate-x-1/2 top-0 w-0.5 bg-efly rounded-full" style="height:0;"></div>
 
-      <!-- Gaps & planes get injected here by JS (two overlay layers) -->
       <div id="prozess-gaps-layer" class="pointer-events-none absolute inset-0"></div>
       <div id="prozess-planes-layer" class="pointer-events-none absolute inset-0"></div>
 
-      <!-- Steps (alternate left/right) -->
+      <!-- Schritte (alternate r/l) -->
       <ol class="space-y-24">
-        <!-- Step 1 (left) -->
         <li class="stepcard relative">
           <div class="grid grid-cols-12 items-center">
             <div class="col-span-12 lg:col-span-6 lg:pr-12">
-              <div class="rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
+              <div class="step-box rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
                 <div class="text-sm font-semibold text-efly">Schritt 1</div>
                 <h3 class="mt-1 font-semibold text-slate-900">Gemeinsame definierung der KPIs</h3>
-                <p class="mt-2 text-slate-600 text-sm">Kurzbeschreibung des ersten Schritts. (Dein Text bleibt hier.)</p>
               </div>
             </div>
             <div class="hidden lg:block lg:col-span-6"></div>
           </div>
         </li>
 
-        <!-- Step 2 (right) -->
         <li class="stepcard relative">
           <div class="grid grid-cols-12 items-center">
             <div class="hidden lg:block lg:col-span-6"></div>
             <div class="col-span-12 lg:col-span-6 lg:pl-12">
-              <div class="rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
+              <div class="step-box rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
                 <div class="text-sm font-semibold text-efly">Schritt 2</div>
                 <h3 class="mt-1 font-semibold text-slate-900">Produkt Schulung</h3>
-                <p class="mt-2 text-slate-600 text-sm">…</p>
               </div>
             </div>
           </div>
         </li>
 
-        <!-- Step 3 (left) -->
         <li class="stepcard relative">
           <div class="grid grid-cols-12 items-center">
             <div class="col-span-12 lg:col-span-6 lg:pr-12">
-              <div class="rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
+              <div class="step-box rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
                 <div class="text-sm font-semibold text-efly">Schritt 3</div>
                 <h3 class="mt-1 font-semibold text-slate-900">Weekly Call</h3>
-                <p class="mt-2 text-slate-600 text-sm">…</p>
               </div>
             </div>
             <div class="hidden lg:block lg:col-span-6"></div>
           </div>
         </li>
 
-        <!-- Step 4 (right) -->
         <li class="stepcard relative">
           <div class="grid grid-cols-12 items-center">
             <div class="hidden lg:block lg:col-span-6"></div>
             <div class="col-span-12 lg:col-span-6 lg:pl-12">
-              <div class="rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
+              <div class="step-box rounded-2xl bg-white border border-slate-200 shadow-soft p-6">
                 <div class="text-sm font-semibold text-efly">Schritt 4</div>
                 <h3 class="mt-1 font-semibold text-slate-900">Gemeinsame Ziele erreichen</h3>
-                <p class="mt-2 text-slate-600 text-sm">…</p>
               </div>
             </div>
           </div>
@@ -547,7 +538,7 @@ html { scroll-behavior: smooth; }
 
     
 
-<!-- Team (click a card to view contact) -->
+<!-- Team -->
 <section id="team" class="py-20 sm:py-28 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-end justify-between gap-4">
@@ -559,7 +550,6 @@ html { scroll-behavior: smooth; }
 
     <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
 
-      <!-- Adrian -->
       <button
         class="team-card rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-efly/50"
         data-name="Adrian Aubele"
@@ -576,7 +566,6 @@ html { scroll-behavior: smooth; }
         <p class="mt-3 text-xs text-slate-500">Klicken für Kontakt</p>
       </button>
 
-      <!-- Moritz -->
       <button
         class="team-card rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-efly/50"
         data-name="Moritz Heller"
@@ -593,7 +582,6 @@ html { scroll-behavior: smooth; }
         <p class="mt-3 text-xs text-slate-500">Klicken für Kontakt</p>
       </button>
 
-      <!-- Jonas -->
       <button
         class="team-card rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft p-6 text-center transition hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-efly/50"
         data-name="Jonas Lamneck"
@@ -615,10 +603,8 @@ html { scroll-behavior: smooth; }
 
   <!-- Modal -->
   <div id="team-modal" class="fixed inset-0 z-50 hidden">
-    <!-- backdrop -->
     <div class="absolute inset-0 bg-black/40" data-close></div>
 
-    <!-- dialog -->
     <div class="absolute inset-0 flex items-center justify-center p-4">
       <div class="w-full max-w-md rounded-2xl bg-white shadow-2xl border border-slate-200 overflow-hidden">
         <div class="flex items-center gap-4 p-6 border-b border-slate-200">
@@ -700,7 +686,7 @@ html { scroll-behavior: smooth; }
     </footer>
 
     <!-- Ausklappbarer Impressum -->
-    <section id="impressum" class="hidden py-16 bg-slate-50 border-t border-slate-200">
+    <section id="impressum" class="hidden py-16 bg-[#454545] text-white">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-semibold">Impressum</h2>
         <p class="mt-2 text-sm text-slate-600">Platzhaltertext.</p>
@@ -883,29 +869,6 @@ html { scroll-behavior: smooth; }
 })();
 
 
-(function () {
-  const stage = document.getElementById('prozess-stage');
-  if (!stage) return;
-  const section = stage.closest('section');
-  const fill = stage.querySelector('.progress-fill');
-
-  function clamp(n, a, b){ return Math.min(Math.max(n, a), b); }
-
-  function update() {
-    const r = section.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const total = Math.max(r.height, 1);
-    const seen = clamp(vh - r.top, 0, total);
-    const progress = seen / total;
-
-    if (fill) fill.style.height = (progress * 100).toFixed(2) + '%';
-  }
-
-  update();
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update);
-})();
-
 /* Team modal */
 (function () {
   const modal = document.getElementById('team-modal');
@@ -929,7 +892,7 @@ html { scroll-behavior: smooth; }
     imgEl.src = img;
     imgEl.alt = name;
 
-    // Set hrefs (mailto/tel) + visible text
+    // Set hrefs (mailto/tel)
     emailEl.textContent = email || '–';
     emailEl.href = email ? `mailto:${email}` : '#';
     phoneEl.textContent = phone || '–';
@@ -963,30 +926,6 @@ html { scroll-behavior: smooth; }
 
 
 
-// Timeline rail fill on scroll
-(function () {
-  const tl = document.getElementById('timeline');
-  const fill = document.getElementById('railFill');
-  if (!tl || !fill) return;
-
-  function clamp(n, a, b) { return Math.min(Math.max(n, a), b); }
-
-  function update() {
-    const r = tl.getBoundingClientRect();
-    const vh = window.innerHeight;
-    // progress from when the top hits viewport to when the bottom leaves
-    const total = r.height + vh; // span to fill 0..100%
-    const seen  = clamp(vh - r.top, 0, total);
-    const p = seen / total;
-    fill.style.height = (p * 100).toFixed(2) + '%';
-  }
-
-  update();
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update);
-})();
-
-
 (function () {
   const stage   = document.getElementById('prozess-stage');
   if (!stage) return;
@@ -1002,16 +941,17 @@ html { scroll-behavior: smooth; }
   function clamp(n, a, b){ return Math.min(Math.max(n, a), b); }
 
   function updateFill() {
-    const r = section.getBoundingClientRect();
-    const vh = window.innerHeight;
-    const total = Math.max(r.height, 1);
-    const seen = clamp(vh - r.top, 0, total);
-    const progress = seen / total;
-    if (fill) fill.style.height = (progress * 100).toFixed(2) + '%';
-  }
+  const stageRect = stage.getBoundingClientRect();
+  const vh = window.innerHeight;
+
+  const targetFromViewportTop = vh / 2;
+  const heightPx = clamp(targetFromViewportTop - stageRect.top, 0, stageRect.height);
+
+  fill.style.height = heightPx.toFixed(2) + 'px';
+}
+
 
   function updateMarkers() {
-    // clear old
     gapsLay.innerHTML = '';
     planesLay.innerHTML = '';
 
@@ -1022,13 +962,13 @@ html { scroll-behavior: smooth; }
       const rect = li.getBoundingClientRect();
       const centerY = (rect.top - stageRect.top) + rect.height / 2;
 
-      // Gap (cuts both rails visually)
+      // Gap timeline
       const gap = document.createElement('div');
       gap.className = 'prozess-gap';
       gap.style.top = `${centerY}px`;
       gapsLay.appendChild(gap);
 
-      // Plane image
+      // Plane bild
       const img = document.createElement('img');
       img.className = 'prozess-plane';
       img.src = PLANE_SRC;
@@ -1047,7 +987,6 @@ html { scroll-behavior: smooth; }
   window.addEventListener('scroll', updateFill, { passive: true });
   window.addEventListener('resize', () => { updateFill(); updateMarkers(); });
 
-  // in case fonts/content reflow after load
   window.addEventListener('load', () => { updateFill(); updateMarkers(); });
 })();
 
