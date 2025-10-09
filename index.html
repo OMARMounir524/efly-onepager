@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>eFLY – Content</title>
+    <title>eFLY – Amazon Content Leistungen</title>
     <meta name="description" content="Draft-Onepager für Referenzen (Logos, Bilder, Videos), Team, Prozess und Kontakt. Eine Marke der eFLY." />
 
 
 <!-- Favicon -->
-<link rel="icon" href="hhttps://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/667d218493143fe75d35f397_Group%204612.svg" type="image/svg+xml">
+<link rel="icon" href="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/667d218493143fe75d35f397_Group%204612.svg" type="image/svg+xml">
 <link rel="icon" href="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/667d218493143fe75d35f397_Group%204612.svg" sizes="32x32" type="image/svg">
 <link rel="icon" href="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/667d218493143fe75d35f397_Group%204612.svg" sizes="192x192" type="image/svg">
 <link rel="apple-touch-icon" href="https://cdn.prod.website-files.com/651e9b79d3f55464374d3c75/667d218493143fe75d35f397_Group%204612.svg" sizes="180x180">
@@ -50,6 +50,42 @@
   transform: translate(-50%, calc(-50% + var(--plane-y-offset, 0px)));
   width: 26px; height: 26px;
   pointer-events: none;
+}
+
+@media (max-width: 768px){
+  /* Mobile timeline-lite: hide vertical timeline layers */
+  #prozess-stage .prozess-rail,
+  #prozess-stage .prozess-fill,
+  #prozess-gaps-layer,
+  #prozess-planes-layer { display: none !important; }
+
+  /* Ensure the step cards paint above */
+  #prozess .stepcard,
+  #prozess .stepcard .step-box { position: relative; z-index: 1; }
+
+  /* Active card accent at the left edge */
+  #prozess .step-box::before{
+    content:"";
+    position:absolute;
+    top:0; bottom:0;
+    left:-8px;
+    width:4px;
+    border-radius:8px;
+    background:transparent;
+    opacity:0;
+    transform: scaleY(.85);
+    transition: opacity .25s ease, transform .25s ease, background-color .25s ease;
+  }
+  #prozess .stepcard.is-active .step-box::before{
+    background:#f07b16; /* efly */
+    opacity:1;
+    transform: scaleY(1);
+  }
+
+  /* Subtle emphasis on the active card */
+  #prozess .stepcard { transition: transform .25s ease, box-shadow .25s ease, opacity .25s ease; }
+  #prozess .stepcard.is-active .step-box{ transform: translateY(-2px); box-shadow: 0 14px 40px rgba(0,0,0,.10); }
+  #prozess .stepcard:not(.is-active) { opacity:.98; }
 }
 
 .prozess-gap {
@@ -156,7 +192,7 @@
             fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji'] }
           }
         }
-      }
+      };
     </script>
     
 
@@ -201,9 +237,33 @@
 
 
 @media (max-width: 768px){
-  .video-ribbon::before{
-    clip-path: polygon(0 10%, 100% 4%, 100% 90%, 0 96%);
-    inset:-4rem 0 -4rem 0;
+  /* Hide the big diagonal ribbon on mobile */
+  #videos .ribbon-bg { display: none !important; }
+
+  /* Subtle efly-orange background spots on mobile */
+  #videos::before,
+  #videos::after{
+    content:"";
+    position:absolute;
+    pointer-events:none;
+    z-index:0;                   /* behind .videos-inner (z-index:1) */
+    border-radius:9999px;
+    background:
+      radial-gradient(closest-side,
+        rgba(240,123,22,0.14),
+        rgba(240,123,22,0.08) 35%,
+        rgba(240,123,22,0) 65%);
+    filter: none;
+  }
+  /* top-left soft blob */
+  #videos::before{
+    width: 120vw; height: 120vw;
+    top: -22vw; left: -32vw;
+  }
+  /* bottom-right soft blob */
+  #videos::after{
+    width: 140vw; height: 140vw;
+    bottom: -34vw; right: -38vw;
   }
 }
 
@@ -235,13 +295,69 @@
 #prozess .stepcard:hover { box-shadow: none !important; transform: none !important; }
 
 #prozess .step-box {
+  position: relative;                 /* <-- new */
   transition: transform .25s ease, box-shadow .25s ease;
 }
 #prozess .step-box:hover {
   transform: translateY(-3px);
   box-shadow: 0 14px 40px rgba(0,0,0,.10);
 }
+/* --- Video card affordances (hover/tap hint) --- */
+.video-card { cursor: pointer; }
+.video-card:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(240,123,22,.45); border-radius: 1rem; }
+#video-grid .aspect-video { position: relative; }
+.video-overlay {
+  background: linear-gradient(to top, rgba(0,0,0,.45), rgba(0,0,0,.25));
+  opacity: 1;
+  transition: opacity .2s ease, transform .2s ease;
+}
+#video-grid .aspect-video > video.hover-video { z-index: 0; }
+#video-grid .aspect-video > .video-overlay { z-index: 1; }
+/* Hide overlay on hover only on desktop (fine pointer). On all devices hide when actually playing */
+@media (hover: hover) and (pointer: fine) {
+  .group:hover .video-overlay { opacity: 0; transform: scale(.98); }
+}
+.video-card.is-playing .video-overlay { opacity: 0; transform: scale(.98); }
 
+/* Content Beispiele – Tabs (Option A) */
+#content-tabs [role="tab"] {
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  padding: .5rem .9rem;
+  font-weight: 600;
+  color: #334155;
+  background: #fff;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+#content-tabs [role="tab"]:hover { background: #f8fafc; }
+#content-tabs [role="tab"]:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(240,123,22,.35); }
+#content-tabs [role="tab"][aria-selected="true"] {
+  color: #0f172a;
+  border-color: rgba(240,123,22,.35);
+  background: rgba(240,123,22,.08);
+  box-shadow: 0 1px 0 rgba(240,123,22,.15) inset;
+}
+/* Tab panel simple entrance animation */
+.tab-anim-in { animation: tabFade .28s ease both; }
+@keyframes tabFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) { .tab-anim-in { animation: none; } }
+
+/* Category badge (used in "Alle" tab) */
+.cat-badge{
+  position: absolute;
+  top: .5rem; left: .5rem;
+  background: rgba(240,123,22,.95);
+  color: #fff;
+  font-weight: 700;
+  font-size: .70rem;
+  letter-spacing: .01em;
+  padding: .20rem .55rem;
+  border-radius: 9999px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.18);
+}
     </style>    
   </head>
 
@@ -363,73 +479,127 @@
   <div class="videos-inner max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
      
-        <div class="flex items-end justify-between gap-4">
-          <div>
-            <h2 class="text-2xl sm:text-3xl font-semibold">Amazon Video Ads</h2>
-          </div>
-        </div>
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-2xl sm:text-3xl font-semibold">Amazon Video Ads</h2>
+      </div>
+    </div>
     
         <div id="video-grid" class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-    
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06] video-card" tabindex="0" role="button" aria-label="Video abspielen/pausieren">
           <!-- poster + video; hover = play -->
-          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+          
             <div class="aspect-video relative">
               <video class="hover-video absolute inset-0 h-full w-full object-cover"
                      muted playsinline preload="none"
                      poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/Muus_to_Chooze_p01ba1.jpg">
                 <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/Muus_to_choose_vb0jj6.mp4" type="video/mp4" />
               </video>
+              <div class="video-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                <svg aria-hidden="true" class="w-14 h-14 text-white/95 drop-shadow" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                </svg>
+                <div class="text-white/95 text-xs sm:text-sm font-medium drop-shadow">
+                  <span class="hidden sm:inline">Mit Maus abspielen</span>
+                  <span class="sm:hidden">Tippen zum Abspielen</span>
+                </div>
+              </div>
             </div>
           </article>
     
-          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06] video-card" tabindex="0" role="button" aria-label="Video abspielen/pausieren">
             <div class="aspect-video relative">
               <video class="hover-video absolute inset-0 h-full w-full object-cover"
                      muted playsinline preload="none"
                      poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/FeelFood_fnjjnh.jpg">
                 <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/FEEL_FOOD_V2.1_vnrcdi.mp4" type="video/mp4" />
               </video>
+              <div class="video-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                <svg aria-hidden="true" class="w-14 h-14 text-white/95 drop-shadow" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                </svg>
+                <div class="text-white/95 text-xs sm:text-sm font-medium drop-shadow">
+                  <span class="hidden sm:inline">Mit Maus abspielen</span>
+                  <span class="sm:hidden">Tippen zum Abspielen</span>
+                </div>
+              </div>
             </div>
           </article>
     
-          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06] video-card" tabindex="0" role="button" aria-label="Video abspielen/pausieren">
             <div class="aspect-video relative">
               <video class="hover-video absolute inset-0 h-full w-full object-cover"
                      muted playsinline preload="none"
                      poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/CS_Clasen_ndrlch.jpg">
                 <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/CW_Claasen_jumvv0.mp4" type="video/mp4" />
               </video>
+              <div class="video-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                <svg aria-hidden="true" class="w-14 h-14 text-white/95 drop-shadow" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                </svg>
+                <div class="text-white/95 text-xs sm:text-sm font-medium drop-shadow">
+                  <span class="hidden sm:inline">Mit Maus abspielen</span>
+                  <span class="sm:hidden">Tippen zum Abspielen</span>
+                </div>
+              </div>
             </div>
           </article>
     
-          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06] video-card" tabindex="0" role="button" aria-label="Video abspielen/pausieren">
             <div class="aspect-video relative">
               <video class="hover-video absolute inset-0 h-full w-full object-cover"
                      muted playsinline preload="none"
                      poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481363/Dr._Beckmann_mzskqt.jpg">
                 <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/260225_-_Dr.Beckmann_-_Final_DE_crbtc6.mp4" type="video/mp4" />
               </video>
+              <div class="video-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                <svg aria-hidden="true" class="w-14 h-14 text-white/95 drop-shadow" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                </svg>
+                <div class="text-white/95 text-xs sm:text-sm font-medium drop-shadow">
+                  <span class="hidden sm:inline">Mit Maus abspielen</span>
+                  <span class="sm:hidden">Tippen zum Abspielen</span>
+                </div>
+              </div>
             </div>
           </article>
     
-          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06] video-card" tabindex="0" role="button" aria-label="Video abspielen/pausieren">
             <div class="aspect-video relative">
               <video class="hover-video absolute inset-0 h-full w-full object-cover"
                      muted playsinline preload="none"
                      poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481363/Afri_Cola_f6pqt9.jpg">
                 <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/AFRI_ui4vc4.mp4" type="video/mp4" />
               </video>
+              <div class="video-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                <svg aria-hidden="true" class="w-14 h-14 text-white/95 drop-shadow" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                </svg>
+                <div class="text-white/95 text-xs sm:text-sm font-medium drop-shadow">
+                  <span class="hidden sm:inline">Mit Maus abspielen</span>
+                  <span class="sm:hidden">Tippen zum Abspielen</span>
+                </div>
+              </div>
             </div>
           </article>
 
 
-          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06]">
+          <article class="group relative w-full rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-soft hover:shadow-lg transition-transform duration-300 will-change-transform hover:scale-[1.06] video-card" tabindex="0" role="button" aria-label="Video abspielen/pausieren">
             <div class="aspect-video relative">
               <video class="hover-video absolute inset-0 h-full w-full object-cover"
                      muted playsinline preload="none"
                      poster="https://res.cloudinary.com/dujghnaly/image/upload/v1758481364/Rhodius_v1gimj.jpg">
                 <source src="https://res.cloudinary.com/dujghnaly/video/upload/f_mp4,q_auto,vc_auto/RHODIUS_et3ds2.mp4" type="video/mp4" />
               </video>
+              <div class="video-overlay absolute inset-0 flex flex-col items-center justify-center gap-2 pointer-events-none">
+                <svg aria-hidden="true" class="w-14 h-14 text-white/95 drop-shadow" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+                </svg>
+                <div class="text-white/95 text-xs sm:text-sm font-medium drop-shadow">
+                  <span class="hidden sm:inline">Mit Maus abspielen</span>
+                  <span class="sm:hidden">Tippen zum Abspielen</span>
+                </div>
+              </div>
             </div>
           </article>
             </div>
@@ -437,7 +607,7 @@
     </section>
     
 
-<!-- Content Beispiele Carousel -->
+<!-- Content Beispiele (Option A — Tabs) -->
 <section id="bilder" class="pt-20 sm:pt-28 pb-28 sm:pb-36 bg-white">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-end justify-between gap-4">
@@ -446,50 +616,210 @@
       </div>
     </div>
 
-    <div id="content-carousel" class="relative mt-8">
-      <div id="content-viewport" class="overflow-x-hidden overflow-y-visible py-4">
-        <div id="content-track" class="flex will-change-transform transition-transform duration-300 ease-out">
-
-          <div class="basis-1/3 px-2 flex items-center min-w-0">
-            <div id="content-left-frame"
-            class="w-full relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">             
-              <div id="content-left"></div>
-              <button id="content-left-arrow"
-                      class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-                      aria-label="Zur vorherigen Karte">
-                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-slate-300 shadow">
-                  <i class="fa-solid fa-chevron-left"></i>
-                </span>
-              </button>
-            </div>
-          </div>
-
-          <div class="basis-1/2 px-2 flex items-center min-w-0">
-            <div class="w-full rounded-2xl p-[2px] bg-gradient-to-r from-efly/70 to-efly/40">
-              <div id="content-center-frame" class="w-full relative rounded-xl overflow-hidden border border-white/60 shadow-soft transition">
-                <div id="content-center"></div>
-              </div>
-            </div>
-          </div>          
-
-          <div class="basis-1/3 px-2 flex items-center min-w-0">
-            <div id="content-right-frame"
-            class="w-full relative group rounded-2xl overflow-hidden border border-slate-200 bg-white shadow-soft opacity-80 scale-95 transform-gpu transition hover:opacity-100 hover:scale-100 hover:shadow-lg cursor-pointer">       
-              <div id="content-right"></div>
-              <button id="content-right-arrow"
-                      class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
-                      aria-label="Zur nächsten Karte">
-                <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 border border-slate-300 shadow">
-                  <i class="fa-solid fa-chevron-right"></i>
-                </span>
-              </button>
-            </div>
-          </div>
-
-        </div>
-      </div>
+    <!-- Tabs -->
+    <div id="content-tabs" role="tablist" aria-label="Content Kategorien" class="mt-6 flex flex-wrap gap-2">
+      <button id="tab-btn-alle"    role="tab" aria-controls="tab-alle"    aria-selected="true">Alle</button>
+      <button id="tab-btn-galerie" role="tab" aria-controls="tab-galerie" aria-selected="false">Galeriebilder</button>
+      <button id="tab-btn-a-plus"  role="tab" aria-controls="tab-a-plus"  aria-selected="false">A+ Content</button>
+      <button id="tab-btn-marke"   role="tab" aria-controls="tab-marke"   aria-selected="false">Markengeschichten</button>
+      <button id="tab-btn-brand"   role="tab" aria-controls="tab-brand"   aria-selected="false">Brand Stores</button>
     </div>
 
+    <!-- Panels -->
+    <div id="tab-panels" class="mt-6">
+      <!-- Alle -->
+<div id="tab-alle" role="tabpanel" aria-labelledby="tab-btn-alle" class="tab-panel">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Galeriebilder -->
+    <a href="https://www.amazon.de/stores/MaHo/page/4280C26E-B0B8-49FE-8407-2F0F3B9A8391" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004238/MaHo_Galeriebilder_kpihyp.jpg" alt="MaHo Galeriebilder" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Galeriebilder</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>MaHo</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+    <a href="https://www.amazon.de/stores/STUR/page/52F21D4F-3375-4E7C-800B-8C82FA59AC05" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004238/Stu%CC%88r_Galeriebilder_z0cqsv.jpg" alt="STUR Galeriebilder" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Galeriebilder</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>STUR</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+    <a href="https://www.amazon.de/stores/page/E226705E-9CE6-428B-A1E5-64F1DF0796D1" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004234/Everydays_Galeriebilder_uqmw5b.jpg" alt="everydays Galeriebilder" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Galeriebilder</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>everydays</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+
+    <!-- A+ Content -->
+    <a href="https://www.amazon.de/stores/page/FD4791E2-890B-4E5D-BD02-78A7D0135290" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004233/IONIQ_A_Content_bcb8gw.jpg" alt="IONIQ A+ Content" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">A+ Content</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>IONIQ</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+    <a href="https://www.amazon.de/stores/junome/page/17BED259-A095-4263-88EF-6252B438E562" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004234/Juno_Me_A_Content_ajcaww.jpg" alt="juno&amp;me A+ Content" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">A+ Content</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>juno&amp;me</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+    <a href="https://www.amazon.de/stores/LiebscherBracht/page/5E2D3113-59C0-47A5-BE4B-A627BC17A99C" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004234/Liebscher_Bracht_A_Content_ysahcq.jpg" alt="Liebscher &amp; Bracht A+ Content" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">A+ Content</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Liebscher &amp; Bracht</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+
+    <!-- Markengeschichten -->
+    <a href="https://www.amazon.de/stores/GebrM%C3%A4rklinCieGmbH/page/A0BED9F1-C8DF-4C4E-9BB0-D763D545CF61" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004236/Ma%CC%88rklin_Markengeschichte_nlnrgc.jpg" alt="Märklin Markengeschichte" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Markengeschichte</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Märklin</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+    <a href="https://www.amazon.de/stores/page/8348CBB3-1BD3-47F8-967C-5EDF98E293FD" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004480/Palado_Markengeschichte_kljv8o.jpg" alt="Palado Markengeschichte" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Markengeschichte</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Palado</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+    <a href="https://www.amazon.de/stores/page/EFAB658B-06F0-4ED0-A122-B2FC627A9C83" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004232/Dr.Beckmann_Markengeschichte_uoc24m.jpg" alt="Dr. Beckmann Markengeschichte" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Markengeschichte</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Dr. Beckmann</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+
+    <!-- Brand Stores -->
+    <a href="https://www.amazon.de/stores/page/E7B2172E-1EB4-4F99-A53A-5CCDC086B518" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004237/Liquid_Elements_Brand_Store_hbcms2.jpg" alt="Liquid Elements Brand Store" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Brand Store</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Liquid Elements</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+    <a href="https://www.amazon.de/stores/page/D45E4F0D-D72A-4E37-A7C2-B235B8C3F581" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004234/Festool_Brand_Store_gm4j8l.jpg" alt="Festool Brand Store" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Brand Store</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Festool</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+    <a href="https://www.amazon.de/stores/page/8348CBB3-1BD3-47F8-967C-5EDF98E293FD" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+      <div class="aspect-video relative bg-white">
+        <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004237/Palado_Brand_Store_sg1qn0.jpg" alt="Palado Brand Store" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+        <span class="cat-badge">Brand Store</span>
+      </div>
+      <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Palado</span><span class="text-efly font-medium">Ansehen →</span></div>
+    </a>
+  </div>
+</div>
+
+      <!-- Galeriebilder -->
+      <div id="tab-galerie" role="tabpanel" aria-labelledby="tab-btn-galerie" class="tab-panel is-active">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <a href="https://www.amazon.de/stores/STUR/page/52F21D4F-3375-4E7C-800B-8C82FA59AC05" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004238/Stu%CC%88r_Galeriebilder_z0cqsv.jpg" alt="STUR Galeriebilder" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>STUR</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+  <a href="https://www.amazon.de/stores/page/E226705E-9CE6-428B-A1E5-64F1DF0796D1" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004234/Everydays_Galeriebilder_uqmw5b.jpg" alt="everydays Galeriebilder" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>everydays</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+  <a href="https://www.amazon.de/stores/MaHo/page/4280C26E-B0B8-49FE-8407-2F0F3B9A8391" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004238/MaHo_Galeriebilder_kpihyp.jpg" alt="MaHo Galeriebilder" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>MaHo</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+</div>
+      </div>
+
+      <!-- A+ Content -->
+      <div id="tab-a-plus" role="tabpanel" aria-labelledby="tab-btn-a-plus" class="tab-panel">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <a href="https://www.amazon.de/stores/page/FD4791E2-890B-4E5D-BD02-78A7D0135290" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004233/IONIQ_A_Content_bcb8gw.jpg" alt="IONIQ A+ Content" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>IONIQ</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+  <a href="https://www.amazon.de/stores/junome/page/17BED259-A095-4263-88EF-6252B438E562" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004234/Juno_Me_A_Content_ajcaww.jpg" alt="juno&amp;me A+ Content" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>juno&amp;me</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+  <a href="https://www.amazon.de/stores/LiebscherBracht/page/5E2D3113-59C0-47A5-BE4B-A627BC17A99C" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004234/Liebscher_Bracht_A_Content_ysahcq.jpg" alt="Liebscher &amp; Bracht A+ Content" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Liebscher &amp; Bracht</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+</div>
+      </div>
+
+      <!-- Markengeschichten -->
+      <div id="tab-marke" role="tabpanel" aria-labelledby="tab-btn-marke" class="tab-panel">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <a href="https://www.amazon.de/stores/GebrM%C3%A4rklinCieGmbH/page/A0BED9F1-C8DF-4C4E-9BB0-D763D545CF61" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004236/Ma%CC%88rklin_Markengeschichte_nlnrgc.jpg" alt="Märklin Markengeschichte" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Märklin</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+  <a href="https://www.amazon.de/stores/page/8348CBB3-1BD3-47F8-967C-5EDF98E293FD" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004480/Palado_Markengeschichte_kljv8o.jpg" alt="Palado Markengeschichte" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Palado</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+  <a href="https://www.amazon.de/stores/page/EFAB658B-06F0-4ED0-A122-B2FC627A9C83" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004232/Dr.Beckmann_Markengeschichte_uoc24m.jpg" alt="Dr. Beckmann Markengeschichte" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Dr. Beckmann</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+</div>
+      </div>
+
+      <!-- Brand Stores -->
+      <div id="tab-brand" role="tabpanel" aria-labelledby="tab-btn-brand" class="tab-panel">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <a href="https://www.amazon.de/stores/page/E7B2172E-1EB4-4F99-A53A-5CCDC086B518" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004237/Liquid_Elements_Brand_Store_hbcms2.jpg" alt="Liquid Elements Brand Store" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Liquid Elements</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+  <a href="https://www.amazon.de/stores/page/D45E4F0D-D72A-4E37-A7C2-B235B8C3F581" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004234/Festool_Brand_Store_gm4j8l.jpg" alt="Festool Brand Store" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Festool</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+  <a href="https://www.amazon.de/stores/page/8348CBB3-1BD3-47F8-967C-5EDF98E293FD" target="_blank" rel="noopener" class="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-soft hover:shadow-lg transition">
+    <div class="aspect-video relative bg-white">
+      <img src="https://res.cloudinary.com/dujghnaly/image/upload/v1760004237/Palado_Brand_Store_sg1qn0.jpg" alt="Palado Brand Store" class="absolute inset-0 h-full w-full object-contain p-4 bg-white" />
+    </div>
+    <div class="p-3 text-sm text-slate-600 flex items-center justify-between"><span>Palado</span><span class="text-efly font-medium">Ansehen →</span></div>
+  </a>
+</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -741,6 +1071,72 @@
     </section>
 
     <script>
+// Smooth in-page navigation (no hash in URL) — robust + mobile friendly
+(function(){
+  const header = document.querySelector('header');
+  const EXTRA_OFFSET = 8; // little breathing room below sticky header
+
+  function scrollToId(id){
+    const target = document.getElementById(id);
+    if (!target) return;
+    const headerH = header ? header.offsetHeight : 0;
+    const top = target.getBoundingClientRect().top + window.scrollY - headerH - EXTRA_OFFSET;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function getLocalHashTarget(a){
+    if (!a) return null;
+    const raw = a.getAttribute('href') || '';
+    const hashIndex = raw.indexOf('#');
+    if (hashIndex === -1) return null;
+    const hash = raw.slice(hashIndex + 1);
+    if (!hash) return null;
+    try {
+      // Resolve to absolute and compare to current page (supports '#id' and 'index.html#id')
+      const abs = new URL(a.href, location.href);
+      const norm = (p) => p.replace(/\/+$/, '');
+      if (abs.origin === location.origin && norm(abs.pathname) === norm(location.pathname)) {
+        return decodeURIComponent(hash);
+      }
+    } catch {}
+    return null;
+  }
+
+  function handleClick(e){
+    const a = e.target.closest('a');
+    if (!a) return;
+    const targetId = getLocalHashTarget(a);
+    if (!targetId) return;
+    const el = document.getElementById(targetId);
+    if (!el) return;
+
+    e.preventDefault();
+
+    // Close mobile menu if open
+    const menu = document.getElementById('mobile-menu');
+    const btn  = document.getElementById('menu-btn');
+    if (menu && !menu.classList.contains('hidden')) {
+      menu.classList.add('hidden');
+      if (btn) btn.setAttribute('aria-expanded','false');
+    }
+
+    scrollToId(targetId);
+
+    // Keep URL clean in case any default hash sneaks in via focus
+    if (location.hash) {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  }
+
+  // Capture-phase listener to ensure we beat default anchor behavior on mobile
+  document.addEventListener('click', handleClick, { capture: true });
+
+  // If the page was opened with a hash (e.g., shared link), clean the URL once
+  if (location.hash) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+})();
+
       const btn = document.getElementById('menu-btn');
       const menu = document.getElementById('mobile-menu');
       if (btn && menu) {
@@ -803,154 +1199,104 @@
   });
 })();
 
-/* Content Beispiele Carousel */
-(function () {
-  const track        = document.getElementById('content-track');
-  const leftFrame    = document.getElementById('content-left-frame');
-  const centerFrame  = document.getElementById('content-center-frame');
-  const rightFrame   = document.getElementById('content-right-frame');
-  const leftContent  = document.getElementById('content-left');
-  const centerContent= document.getElementById('content-center');
-  const rightContent = document.getElementById('content-right');
-  const leftArrow    = document.getElementById('content-left-arrow');
-  const rightArrow   = document.getElementById('content-right-arrow');
-  if (!track || !leftFrame || !centerFrame || !rightFrame) return;
+(function(){
+  const cards = document.querySelectorAll('#video-grid .video-card');
+  if (!cards.length) return;
 
-
-  const contentItems = [
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/07_Ma%CC%88rklin_Markengeschichte_ufvqkz.png",
-    alt: "Märklin Markengeschichte",
-    href: "https://www.amazon.de/stores/GebrM%C3%A4rklinCieGmbH/page/A0BED9F1-C8DF-4C4E-9BB0-D763D545CF61",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/07_Ma%CC%88rklin_Markengeschichte_ufvqkz.png",
-    sideHref: "https://www.amazon.de/stores/GebrM%C3%A4rklinCieGmbH/page/A0BED9F1-C8DF-4C4E-9BB0-D763D545CF61"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/01_STUR_Galeriebilder_m17hws.png",
-    alt: "STUR Galeriebilder",
-    href: "https://www.amazon.de/stores/STUR/page/52F21D4F-3375-4E7C-800B-8C82FA59AC05",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/01_STUR_Galeriebilder_m17hws.png",
-    sideHref: "https://www.amazon.de/stores/STUR/page/52F21D4F-3375-4E7C-800B-8C82FA59AC05"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/03_everydays_Galeriebilder_vbq1gw.png",
-    alt: "everydays Galeriebilder",
-    href: "https://www.amazon.de/stores/page/E226705E-9CE6-428B-A1E5-64F1DF0796D1",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/03_everydays_Galeriebilder_vbq1gw.png",
-    sideHref: "https://www.amazon.de/stores/page/E226705E-9CE6-428B-A1E5-64F1DF0796D1"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/10_Liquid_Elements_Brand_Store_wv7hez.png",
-    alt: "Liquid Elements Brand Store",
-    href: "https://www.amazon.de/stores/page/E7B2172E-1EB4-4F99-A53A-5CCDC086B518",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/10_Liquid_Elements_Brand_Store_wv7hez.png",
-    sideHref: "https://www.amazon.de/stores/page/E7B2172E-1EB4-4F99-A53A-5CCDC086B518"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/06_Palado_Markengeschichte_g0mlpa.png",
-    alt: "Palado Markengeschichte",
-    href: "https://www.amazon.de/stores/page/8348CBB3-1BD3-47F8-967C-5EDF98E293FD",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/06_Palado_Markengeschichte_g0mlpa.png",
-    sideHref: "https://www.amazon.de/stores/page/8348CBB3-1BD3-47F8-967C-5EDF98E293FD"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/08_Festool_Brand_Store_c4cnz3.png",
-    alt: "Festool Brand Store",
-    href: "https://www.amazon.de/stores/page/D45E4F0D-D72A-4E37-A7C2-B235B8C3F581",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/08_Festool_Brand_Store_c4cnz3.png",
-    sideHref: "https://www.amazon.de/stores/page/D45E4F0D-D72A-4E37-A7C2-B235B8C3F581"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/05_IONIQ_A_Content_wobhk5.png",
-    alt: "IONIQ A+ Content",
-    href: "https://www.amazon.de/stores/page/FD4791E2-890B-4E5D-BD02-78A7D0135290",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482205/05_IONIQ_A_Content_wobhk5.png",
-    sideHref: "https://www.amazon.de/stores/page/FD4791E2-890B-4E5D-BD02-78A7D0135290"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/09_Dr._Beckmann_Brand_Store_djyayg.png",
-    alt: "Dr. Beckmann Brand Store",
-    href: "https://www.amazon.de/stores/page/EFAB658B-06F0-4ED0-A122-B2FC627A9C83",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/09_Dr._Beckmann_Brand_Store_djyayg.png",
-    sideHref: "https://www.amazon.de/stores/page/EFAB658B-06F0-4ED0-A122-B2FC627A9C83"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/02_MaHo_Galeriebilder_t2qlk9.png",
-    alt: "MaHo Galeriebilder",
-    href: "https://www.amazon.de/stores/MaHo/page/4280C26E-B0B8-49FE-8407-2F0F3B9A8391",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/02_MaHo_Galeriebilder_t2qlk9.png",
-    sideHref: "https://www.amazon.de/stores/MaHo/page/4280C26E-B0B8-49FE-8407-2F0F3B9A8391"
-  },
-  {
-    src: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/04_Juno_me_A_Content_wgcuaj.png",
-    alt: "juno&me A+ Content",
-    href: "https://www.amazon.de/stores/junome/page/17BED259-A095-4263-88EF-6252B438E562",
-    sidePoster: "https://res.cloudinary.com/dujghnaly/image/upload/v1758482204/04_Juno_me_A_Content_wgcuaj.png",
-    sideHref: "https://www.amazon.de/stores/junome/page/17BED259-A095-4263-88EF-6252B438E562"
-  }
-];
-
-  if (!contentItems.length) return;
-
-  const mod = (n, m) => ((n % m) + m) % m;
-  let index = 0;
-  let animating = false;
-  const DURATION = 520;
-  const SHIFT = '-33.333%';
-  function cardHTML(item, { center = false } = {}) {
-  const href = center ? (item.href || '#') : (item.sideHref || item.href || '#');
-  const imgSrc = center ? item.src : (item.sidePoster || item.src);
-
-  const imgClasses = center
-    ? 'object-cover'
-    : 'object-contain p-6 bg-white';
-
-  return `
-    <a href="${href}" target="_blank" rel="noopener"
-       class="block aspect-video relative rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-efly/50 cursor-pointer"
-       aria-label="${item.alt}">
-      <img src="${imgSrc}" alt="${item.alt}"
-           class="absolute inset-0 h-full w-full ${imgClasses}">
-    </a>
-  `;
-}
-
-
-
-  function render() {
-    const leftIndex  = mod(index - 1, contentItems.length);
-    const rightIndex = mod(index + 1, contentItems.length);
-
-    leftContent.innerHTML   = cardHTML(contentItems[leftIndex],  { center: false });
-    centerContent.innerHTML = cardHTML(contentItems[index],      { center: true  });
-    rightContent.innerHTML  = cardHTML(contentItems[rightIndex], { center: false });
+  function togglePlay(v){
+    if (!v) return;
+    if (v.readyState === 0) { try { v.load(); } catch {} }
+    if (v.paused) { v.play().catch(()=>{}); }
+    else {
+      try { v.pause(); v.currentTime = 0; v.load(); } catch {}
+    }
   }
 
-  function slide(direction) {
-    if (animating) return;
-    animating = true;
+  cards.forEach(card => {
+    const v = card.querySelector('video.hover-video');
+    if (!v) return;
 
-    track.style.transform = `translateX(${direction === 'next' ? SHIFT : '33.333%'})`;
+    // Keep CSS state in sync
+    v.addEventListener('play',  () => card.classList.add('is-playing'));
+    v.addEventListener('pause', () => card.classList.remove('is-playing'));
 
-    setTimeout(() => {
-      index = mod(index + (direction === 'next' ? 1 : -1), contentItems.length);
-      render();
-      track.style.transition = 'none';
-      track.style.transform  = 'translateX(0)';
-      track.getBoundingClientRect();
-      track.style.transition = '';
-      animating = false;
-    }, DURATION);
+    // Touch-friendly: single tap should play/pause; avoid double-toggle from ghost click
+    let skipClickUntil = 0; // timestamp to ignore the next synthetic click after a touch
+
+    card.addEventListener('pointerup', (e) => {
+      if (e.pointerType === 'touch') {
+        skipClickUntil = performance.now() + 600; // ignore next click within 600ms
+        togglePlay(v);
+      }
+    }, { passive: true });
+
+    // Click toggles playback (desktop & mouse). Ignore ghost clicks after touch.
+    card.addEventListener('click', (e) => {
+      if (e.target.tagName.toLowerCase() === 'button') return;
+      if (performance.now() < skipClickUntil) return; // ignore synthetic click after touch
+      togglePlay(v);
+    });
+
+    // Keyboard accessibility
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); togglePlay(v); }
+    });
+  });
+
+  // Also clear playing state when a video gets reset by IO from the hover script
+  const vids = document.querySelectorAll('video.hover-video');
+  vids.forEach(v => {
+    v.addEventListener('emptied', () => {
+      const card = v.closest('.video-card');
+      if (card) card.classList.remove('is-playing');
+    });
+  });
+})();
+
+
+/* Content Beispiele – Tabs (Option A) */
+(function(){
+  const tablist = document.getElementById('content-tabs');
+  if (!tablist) return;
+
+  const tabs   = Array.from(tablist.querySelectorAll('[role="tab"]'));
+  const panels = {
+    'tab-alle':    document.getElementById('tab-alle'),
+    'tab-galerie': document.getElementById('tab-galerie'),
+    'tab-a-plus':  document.getElementById('tab-a-plus'),
+    'tab-marke':   document.getElementById('tab-marke'),
+    'tab-brand':   document.getElementById('tab-brand')
+  };
+
+  function activate(tab){
+    const targetId = tab.getAttribute('aria-controls');
+    // update tabs
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+    // show target + animate in
+    Object.entries(panels).forEach(([id, el]) => {
+      if (!el) return;
+      if (id === targetId) {
+        el.classList.add('is-active', 'tab-anim-in');
+        el.style.display = 'block';
+        el.addEventListener('animationend', () => el.classList.remove('tab-anim-in'), { once: true });
+      } else {
+        el.classList.remove('is-active', 'tab-anim-in');
+        el.style.display = 'none';
+      }
+    });
   }
 
-  render();
-  [leftArrow, leftFrame].forEach(el => el && el.addEventListener('click', () => slide('prev')));
-  [rightArrow, rightFrame].forEach(el => el && el.addEventListener('click', () => slide('next')));
+  // init (ensure only the selected is visible)
+  activate(tabs.find(t => t.getAttribute('aria-selected') === 'true') || tabs[0]);
 
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowRight') slide('next');
-    if (e.key === 'ArrowLeft')  slide('prev');
+  tabs.forEach((tab, idx) => {
+    tab.addEventListener('click', () => activate(tab));
+    tab.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); (tabs[idx+1] || tabs[0]).focus(); activate(tabs[idx+1] || tabs[0]); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); (tabs[idx-1] || tabs[tabs.length-1]).focus(); activate(tabs[idx-1] || tabs[tabs.length-1]); }
+      if (e.key === 'Home')       { e.preventDefault(); tabs[0].focus(); activate(tabs[0]); }
+      if (e.key === 'End')        { e.preventDefault(); tabs[tabs.length-1].focus(); activate(tabs[tabs.length-1]); }
+    });
   });
 })();
 
@@ -1042,36 +1388,55 @@
     const steps = Array.from(stage.querySelectorAll('li.stepcard'));
     const stageRect = stage.getBoundingClientRect();
 
+    // show planes only on desktop/tablet (>= 769px)
+    const showPlanes = window.matchMedia('(min-width: 769px)').matches;
+
     steps.forEach(li => {
       const rect = li.getBoundingClientRect();
       const centerY = (rect.top - stageRect.top) + rect.height / 2;
 
-      // Gap timeline
+      // Gap on the timeline (always rendered)
       const gap = document.createElement('div');
       gap.className = 'prozess-gap';
       gap.style.top = `${centerY}px`;
       gapsLay.appendChild(gap);
 
-      // Plane bild
-      const img = document.createElement('img');
-      img.className = 'prozess-plane';
-      img.src = PLANE_SRC;
-      img.alt = '';
-      img.decoding = 'async';
-      img.loading = 'lazy';
-      img.style.top = `${centerY}px`;
-      planesLay.appendChild(img);
+      // Plane icon only on larger viewports
+      if (showPlanes) {
+        const img = document.createElement('img');
+        img.className = 'prozess-plane';
+        img.src = PLANE_SRC;
+        img.alt = '';
+        img.decoding = 'async';
+        img.loading = 'lazy';
+        img.style.top = `${centerY}px`;
+        planesLay.appendChild(img);
+      }
     });
+  }
+
+  function setActiveStep(){
+    const steps = Array.from(stage.querySelectorAll('li.stepcard'));
+    if (!steps.length) return;
+    const center = window.innerHeight / 2;
+    let best = null, bestDist = Infinity;
+    steps.forEach(li => {
+      const r = li.getBoundingClientRect();
+      const mid = r.top + r.height / 2;
+      const d = Math.abs(mid - center);
+      if (d < bestDist) { best = li; bestDist = d; }
+    });
+    steps.forEach(li => li.classList.toggle('is-active', li === best));
   }
 
   // init
   updateFill();
   updateMarkers();
+  setActiveStep();
 
-  window.addEventListener('scroll', updateFill, { passive: true });
-  window.addEventListener('resize', () => { updateFill(); updateMarkers(); });
-
-  window.addEventListener('load', () => { updateFill(); updateMarkers(); });
+  window.addEventListener('scroll', () => { updateFill(); setActiveStep(); }, { passive: true });
+  window.addEventListener('resize', () => { updateFill(); updateMarkers(); setActiveStep(); });
+  window.addEventListener('load', () => { updateFill(); updateMarkers(); setActiveStep(); });
 })();
 
 
